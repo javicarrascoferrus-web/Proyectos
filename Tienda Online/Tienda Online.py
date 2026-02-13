@@ -88,11 +88,11 @@ def vista_finalizacion() -> str:
 
 @app.route("/", methods=["GET"])
 def index():
-    # 1) Como en PHP: si no hay carrito, lo creamos vacío
+
     if "carrito" not in session:
         session["carrito"] = []
 
-    # 2) Como en PHP: decidimos qué vista mostrar según operacion
+ 
     operacion = request.args.get("operacion")
 
     if operacion == "producto":
@@ -126,7 +126,7 @@ def add_carrito():
 def vaciar_carrito():
     session["carrito"] = []
     return pagina_base("""
-        <p>🧹 Carrito vaciado.</p>
+        <p>Carrito vaciado.</p>
         <a class="btn" href="/">Volver al catálogo</a>
     """)
 
