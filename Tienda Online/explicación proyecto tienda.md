@@ -9,7 +9,13 @@ Este proyecto de tienda online está realizado con Python y Flask en el que:
 
 Con este comando; (from flask import Flask, request, session) importa Flask y herramientas necesarias
 
-###Con esto creo la aplicación web y la password para los usuarios###
+
+### Con esto creo la aplicación web y la password para los usuarios###
 
 app = Flask(__name__)
 app.secret_key = "clave-muy-simple"
+
+### Esta función crea una plantilla HTML básico### 
+def pagina_base(contenido_html):
+
+
