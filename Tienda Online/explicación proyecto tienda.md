@@ -15,7 +15,54 @@ Con este comando; (from flask import Flask, request, session) importa Flask y he
 app = Flask(__name__)
 app.secret_key = "clave-muy-simple"
 
-### Esta función crea una plantilla HTML básico### 
+### Esta función crea una plantilla HTML básico
 def pagina_base(contenido_html):
 
+### muestra links para ver el catalogo y el carrito
+def vista_catalogo():
 
+
+### Muestra un producto:
+def vista_producto(producto_id):
+
+### Muestra el carrito:
+def vista_carrito():
+
+### Productos del carrito:
+def vista_finalizacion():
+
+### Ruta principal:
+@app.route("/", methods=["GET"])
+def index():
+
+ Esta función decide que mostrar segun la URL
+
+ ### Selecciona vista:
+ if operacion == "producto":
+
+producto → muestra producto
+
+carrito → muestra carrito
+
+finalizacion → muestra compra
+
+nada → catálogo
+
+### Añadir al carrito:
+@app.route("/add", methods=["POST"])
+def add_carrito():
+
+
+### Vaciar carrito:
+@app.route("/vaciar", methods=["POST"])
+
+
+### ejecución e inicio del servidor:
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
+
+ 
