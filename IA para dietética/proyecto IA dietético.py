@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-PAGE = """
+
 <!doctype html>
 <html lang="es">
 <head>
