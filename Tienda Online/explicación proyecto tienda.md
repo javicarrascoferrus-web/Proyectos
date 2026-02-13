@@ -57,7 +57,7 @@ def add_carrito():
 @app.route("/vaciar", methods=["POST"])
 
 
-### ejecución e inicio del servidor:
+### Ejecución e inicio del servidor:
 if __name__ == "__main__":
     app.run(debug=True)
 
