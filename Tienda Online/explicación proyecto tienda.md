@@ -6,9 +6,8 @@ Este proyecto de tienda online está realizado con Python y Flask en el que:
 - Guardar el carrito usando sesiones.
 - Finalizar la compra.
 
-
-Con este comando; (from flask import Flask, request, session) importa Flask y herramientas necesarias
-
+### Importar flask y herramientas
+from flask import Flask, request, session
 
 ### Con esto creo la aplicación web y la password para los usuarios###
 
