@@ -13,11 +13,7 @@ def pagina_base(contenido_html: str) -> str:
         <meta charset="utf-8">
         <title>Tienda online</title>
         <style>
-            body {{ font-family: Arial, sans-serif; margin: 0; }}
-            header, footer {{ background: #eee; padding: 12px; }}
-            main {{ padding: 12px; }}
-            a {{ text-decoration: none; }}
-            .btn {{ display:inline-block; padding:6px 10px; background:#ddd; margin:4px 0; }}
+          
         </style>
     </head>
     <body>
