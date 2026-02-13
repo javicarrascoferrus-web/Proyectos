@@ -93,6 +93,7 @@ crea prompt reforzado
 requests.post()
 
    ↓
+   
 Ollama local
 
    ↓
