@@ -79,14 +79,17 @@ if __name__ == "__main__":
 
 # Esquema del proyecto:
 Navegador
+
    ↓
    
 Flask (web simple)
 
    ↓
+   
 crea prompt reforzado
 
    ↓
+   
 requests.post()
 
    ↓
@@ -97,4 +100,5 @@ Ollama local
 respuesta JSON
 
    ↓
+   
 Flask la muestra en HTML
