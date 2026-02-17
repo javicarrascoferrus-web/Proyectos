@@ -11,8 +11,8 @@ DB = {
     "database": "training_center",
 }
 
-ADMIN_USER = "jocarsa"
-ADMIN_PASS = "jocarsa"
+ADMIN_USER = "Javier Carrasco"
+ADMIN_PASS = "Javier Carrasco"
 
 ESTADOS = ["Nuevo", "Contactado", "En seguimiento", "Ganado", "Perdido"]
 
