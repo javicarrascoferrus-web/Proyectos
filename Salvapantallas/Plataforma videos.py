@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-JSON_FILE = "channel_playlists_with_videos.json"
+JSON_FILE = "canal_videos.json"
 
 HTML = """
 <!doctype html>
