@@ -13,7 +13,7 @@ os → sirve para comprobar si existen archivos (miniaturas)
 app = Flask(__name__)
 
 # Nombre archivo JSON:
-JSON_FILE = "channel_playlists_with_videos.json"
+JSON_FILE = "canal_videos.json"
 
 # Función que lee JSON:
 def leer_json():
