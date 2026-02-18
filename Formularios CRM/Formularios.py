@@ -107,6 +107,7 @@ def formulario():
     html = """
     <!doctype html><html lang="es"><head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/estilo.css">
     <title>Formulario</title>
     
     </head><body>
