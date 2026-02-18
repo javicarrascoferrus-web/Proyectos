@@ -9,13 +9,7 @@ PAGE = """
 <head>
   <meta charset="utf-8">
   <title>Ollama Web (simple)</title>
-  <style>
-    body{font-family:system-ui,Arial;margin:20px;max-width:980px}
-    textarea,input{width:100%;padding:10px;margin:6px 0}
-    .row{display:grid;grid-template-columns:1fr 2fr;gap:10px}
-    pre{background:#f4f4f4;padding:12px;white-space:pre-wrap}
-    button{padding:10px 14px}
-  </style>
+
 </head>
 <body>
   <h2>Ollama Web (simple)</h2>
