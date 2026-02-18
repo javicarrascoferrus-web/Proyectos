@@ -11,6 +11,7 @@ HTML = """
 <html lang="es">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="css/estilo.css">
   <title>Videos</title>
 
 </head>
