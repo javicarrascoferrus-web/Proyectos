@@ -12,16 +12,7 @@ HTML = """
 <head>
   <meta charset="utf-8">
   <title>Videos</title>
-  <style>
-    body{font-family:Arial;background:#111;color:#fff;padding:20px;}
-    h2{margin-top:30px;color:#ff4d6d;}
-    .video{display:flex;gap:10px;align-items:center;background:#1c1c1c;
-           padding:10px;border-radius:8px;margin:10px 0;}
-    img{width:120px;height:68px;object-fit:cover;border-radius:6px;background:#333;}
-    a{color:#9ad;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    .title{font-weight:bold;}
-  </style>
+
 </head>
 <body>
 
