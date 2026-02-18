@@ -87,7 +87,7 @@ def index():
         html_out.append(f"<hr><h2><a href='/?id={uid_str}'>{subject}</a></h2>")
         html_out.append(f"<small>{sender}</small><br><br>")
         if image:
-            html_out.append(f"<img src='{image}' style='max-width:100%;height:auto'><br><br>")
+            html_out.append
         html_out.append(body)
 
         if uid:  
