@@ -11,9 +11,7 @@ def resumir_cv(md_file: str, model="qwen2.5:3b-instruct", host="http://localhost
     Añade una opinión: ¿es válido para profesor de ciclos formativos de FP? (justifica breve).
 
     CV:
-    ---
-    {cv}
-    ---
+
     """).strip()
 
     r = requests.post(f"{host}/api/generate", json={"model": model.strip(), "prompt": prompt, "stream": False}, timeout=600)
