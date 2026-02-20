@@ -1,7 +1,6 @@
-
-
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import logging
@@ -15,8 +14,9 @@ from typing import Iterable, List, Tuple
 
 import requests
 
-
-
+# ----------------------------
+# Config por defecto
+# ----------------------------
 MODEL = "qwen2.5:7b-instruct-q4_0"
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 
@@ -24,7 +24,10 @@ REQUEST_TIMEOUT = 240
 RETRIES = 3
 SLEEP_BETWEEN_CALLS = 0.6
 
-SCRIPT_DIR = Path(__file__).resolve().parent
+MAX_CONTEXT_CHARS = 12000  # recorta el documento para no hacer prompts gigantes
+
+# Fallback robusto por si __file__ no existe (notebooks/otros runners)
+SCRIPT_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DOCS_DIR = SCRIPT_DIR / "documentos"
 DB_PATH = SCRIPT_DIR / "blog.sqlite"
 CACHE_DIR = SCRIPT_DIR / ".cache_articulos"
@@ -34,7 +37,6 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 log = logging.getLogger("bloggen")
 
 
-
 @dataclass(frozen=True)
 class Item:
     title: str
@@ -42,8 +44,6 @@ class Item:
     h1: str
     h2: str
     h3_raw: str
-
-
 
 
 def now_iso() -> str:
@@ -92,12 +92,17 @@ def extract_items(md_body: str, file_stem: str) -> List[Item]:
     return out
 
 
-def build_prompt(full_doc: str, category: str, article_title: str) -> str:
+def build_prompt(full_doc: str, category: str, article_title: str, max_chars: int) -> str:
+    # Recortamos el documento para evitar prompts enormes
+    doc = full_doc.strip()
+    if len(doc) > max_chars:
+        doc = doc[:max_chars] + "\n\n[...documento recortado por longitud...]"
+
     return f"""Eres un redactor técnico experto en IA aplicada a programación.
 Escribe en español, con un tono claro y práctico para programadores.
 
-CONTEXTO (documento completo, úsalo para alinear terminología y enfoque):
-\"\"\"{full_doc}\"\"\"
+CONTEXTO (documento, úsalo para alinear terminología y enfoque):
+\"\"\"{doc}\"\"\"
 
 METADATOS:
 - Categoría del artículo (contexto): {category}
@@ -126,9 +131,9 @@ def cache_path(source_file: str, title: str, category: str) -> Path:
     return CACHE_DIR / f"{h}.json"
 
 
-def ollama_generate(session: requests.Session, prompt: str) -> str:
+def ollama_generate(session: requests.Session, prompt: str, model: str, url: str) -> str:
     payload = {
-        "model": MODEL,
+        "model": model,
         "prompt": prompt,
         "stream": False,
         "options": {"temperature": 0.7, "top_p": 0.9, "num_ctx": 8192},
@@ -137,20 +142,24 @@ def ollama_generate(session: requests.Session, prompt: str) -> str:
     last_err: Exception | None = None
     for attempt in range(1, RETRIES + 1):
         try:
-            r = session.post(OLLAMA_URL, json=payload, timeout=REQUEST_TIMEOUT)
+            r = session.post(url, json=payload, timeout=REQUEST_TIMEOUT)
             r.raise_for_status()
             data = r.json()
             text = (data.get("response") or "").strip()
             if not text:
-                raise RuntimeError("Respuesta vacía de Ollama.")
+                raise RuntimeError("Respuesta vacía de Ollama (campo 'response' vacío).")
             return text
         except Exception as e:
             last_err = e
+            # backoff simple
             time.sleep(attempt)
 
-    raise RuntimeError(f"Fallo llamando a Ollama tras {RETRIES} intentos: {last_err}")
-
-
+    raise RuntimeError(
+        f"Fallo llamando a Ollama tras {RETRIES} intentos.\n"
+        f"- URL: {url}\n"
+        f"- Modelo: {model}\n"
+        f"- Último error: {last_err}"
+    )
 
 
 def ensure_db(conn: sqlite3.Connection) -> None:
@@ -174,41 +183,66 @@ def ensure_db(conn: sqlite3.Connection) -> None:
 
 
 def existing_pairs(conn: sqlite3.Connection) -> set[Tuple[str, str]]:
-
     return set(conn.execute("SELECT title, category FROM posts").fetchall())
 
 
-def insert_many(conn: sqlite3.Connection, rows: Iterable[Tuple[str, str, str, str]]) -> int:
-    cur = conn.executemany(
-        "INSERT OR IGNORE INTO posts(date, title, content, category) VALUES(?, ?, ?, ?)",
-        rows,
+def load_cached_content(ck: Path) -> str:
+    if not ck.is_file():
+        return ""
+    try:
+        cached = json.loads(ck.read_text(encoding="utf-8", errors="replace"))
+        content = (cached.get("content") or "").strip()
+        return content
+    except Exception:
+        return ""
+
+
+def save_cache(
+    ck: Path,
+    source_file: str,
+    category: str,
+    title: str,
+    model: str,
+    content_md: str,
+    it: Item,
+) -> None:
+    ck.write_text(
+        json.dumps(
+            {
+                "source_file": source_file,
+                "category": category,
+                "title": title,
+                "generated_at": now_iso(),
+                "model": model,
+                "content": content_md,
+                "hierarchy": {"h1": it.h1, "h2": it.h2, "h3_raw": it.h3_raw},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
     )
- 
-    return conn.total_changes  
 
 
+def run(docs_dir: Path, db_path: Path, model: str, ollama_url: str, max_context_chars: int) -> None:
+    if not docs_dir.is_dir():
+        raise SystemExit(f"ERROR: No existe la carpeta: {docs_dir}")
 
-
-def main() -> None:
-    if not DOCS_DIR.is_dir():
-        raise SystemExit(f"ERROR: No existe la carpeta: {DOCS_DIR}")
-
-    md_files = sorted(DOCS_DIR.glob("*.md"))
+    md_files = sorted(docs_dir.glob("*.md"))
     if not md_files:
-        log.info(f"No se encontraron .md en {DOCS_DIR}")
+        log.info(f"No se encontraron .md en {docs_dir}")
         return
 
-    with sqlite3.connect(DB_PATH) as conn, requests.Session() as session:
+    with sqlite3.connect(db_path) as conn, requests.Session() as session:
         ensure_db(conn)
         seen = existing_pairs(conn)
 
         inserted = 0
         skipped = 0
-        total_before = conn.total_changes
 
-        log.info(f"Encontrados {len(md_files)} archivos en {DOCS_DIR}")
-        log.info(f"DB: {DB_PATH}")
-        log.info(f"Modelo: {MODEL}")
+        log.info(f"Encontrados {len(md_files)} archivos en {docs_dir}")
+        log.info(f"DB: {db_path}")
+        log.info(f"Modelo: {model}")
         log.info("-" * 70)
 
         for md_path in md_files:
@@ -232,58 +266,63 @@ def main() -> None:
                     continue
 
                 ck = cache_path(md_path.name, it.title, it.category)
-                content_md = ""
-                if ck.is_file():
-                    try:
-                        cached = json.loads(ck.read_text(encoding="utf-8"))
-                        content_md = (cached.get("content") or "").strip()
-                    except Exception:
-                        content_md = ""
 
+                content_md = load_cached_content(ck)
                 if content_md:
                     log.info(f"  - (cache→db) [{it.category}] {it.title}")
                 else:
                     log.info(f"  - (gen) [{it.category}] {it.title}")
-                    prompt = build_prompt(raw, it.category, it.title)
-                    content_md = ollama_generate(session, prompt)
+                    prompt = build_prompt(raw, it.category, it.title, max_chars=max_context_chars)
+                    content_md = ollama_generate(session, prompt, model=model, url=ollama_url)
                     if len(content_md) < 200:
                         raise RuntimeError(f"Contenido demasiado corto generado para: {it.title}")
 
-                    ck.write_text(
-                        json.dumps(
-                            {
-                                "source_file": md_path.name,
-                                "category": it.category,
-                                "title": it.title,
-                                "generated_at": now_iso(),
-                                "model": MODEL,
-                                "content": content_md,
-                                "hierarchy": {"h1": it.h1, "h2": it.h2, "h3_raw": it.h3_raw},
-                            },
-                            ensure_ascii=False,
-                            indent=2,
-                        ),
-                        encoding="utf-8",
+                    save_cache(
+                        ck=ck,
+                        source_file=md_path.name,
+                        category=it.category,
+                        title=it.title,
+                        model=model,
+                        content_md=content_md,
+                        it=it,
                     )
                     time.sleep(SLEEP_BETWEEN_CALLS)
 
                 batch_rows.append((now_iso(), it.title, content_md, it.category))
                 seen.add(key)
 
-            # Insert por lote (1 commit por archivo)
-            before = conn.total_changes
-            conn.executemany(
-                "INSERT OR IGNORE INTO posts(date, title, content, category) VALUES(?, ?, ?, ?)",
-                batch_rows,
-            )
-            conn.commit()
-            inserted += max(0, conn.total_changes - before)
+            if batch_rows:
+                before = conn.total_changes
+                conn.executemany(
+                    "INSERT OR IGNORE INTO posts(date, title, content, category) VALUES(?, ?, ?, ?)",
+                    batch_rows,
+                )
+                conn.commit()
+                inserted += max(0, conn.total_changes - before)
 
         log.info("\n" + "=" * 70)
         log.info(f"Insertados: {inserted}")
         log.info(f"Saltados (ya existían): {skipped}")
         log.info(f"Cache: {CACHE_DIR}")
         log.info("=" * 70)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Generador de posts desde Markdown usando Ollama.")
+    parser.add_argument("--docs", type=str, default=str(DOCS_DIR), help="Carpeta con .md")
+    parser.add_argument("--db", type=str, default=str(DB_PATH), help="Ruta a SQLite")
+    parser.add_argument("--model", type=str, default=MODEL, help="Modelo Ollama")
+    parser.add_argument("--url", type=str, default=OLLAMA_URL, help="URL API Ollama /api/generate")
+    parser.add_argument("--max-context", type=int, default=MAX_CONTEXT_CHARS, help="Máx caracteres de contexto")
+    args = parser.parse_args()
+
+    run(
+        docs_dir=Path(args.docs),
+        db_path=Path(args.db),
+        model=args.model,
+        ollama_url=args.url,
+        max_context_chars=args.max_context,
+    )
 
 
 if __name__ == "__main__":
