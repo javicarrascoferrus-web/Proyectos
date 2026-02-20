@@ -1,7 +1,7 @@
 from flask import Flask, request, session
 
 app = Flask(__name__)
-app.secret_key = "clave-muy-simple"  #Necesario para usar sesiones
+app.secret_key = "clave-muy-simple"  
 
 
 def pagina_base(contenido_html: str) -> str:
