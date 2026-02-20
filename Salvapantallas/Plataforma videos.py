@@ -7,6 +7,11 @@ app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 JSON_FILE = os.path.join(BASE_DIR, "canal_videos.json")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
+CSS_DIR = os.path.join(STATIC_DIR, "css")
+THUMBS_DIR = os.path.join(STATIC_DIR, "thumbs")
+CSS_FILE = os.path.join(CSS_DIR, "estilo.css")
+PLACEHOLDER_SVG = os.path.join(THUMBS_DIR, "placeholder.svg")
+
 
 HTML = """
 <!doctype html>
@@ -36,10 +41,10 @@ HTML = """
       {% if v.thumb_file %}
         <img src="{{ url_for('static', filename=v.thumb_file) }}" alt="miniatura">
       {% else %}
-        <img src="{{ url_for('static', filename='thumbs/placeholder.png') }}" alt="sin miniatura">
+        <img src="{{ url_for('static', filename='thumbs/placeholder.svg') }}" alt="sin miniatura">
       {% endif %}
 
-      <div>
+      <div class="info">
         <div class="title">{{ v.title }}</div>
         <a href="{{ v.url }}" target="_blank" rel="noopener">Abrir vídeo</a>
       </div>
@@ -52,8 +57,32 @@ HTML = """
 </html>
 """
 
-def leer_json():
+
+
+
+
+def asegurar_archivos():
  
+    os.makedirs(CSS_DIR, exist_ok=True)
+    os.makedirs(THUMBS_DIR, exist_ok=True)
+
+
+    if not os.path.exists(JSON_FILE):
+        with open(JSON_FILE, "w", encoding="utf-8") as f:
+            json.dump(EJEMPLO_JSON, f, ensure_ascii=False, indent=2)
+
+    if not os.path.exists(CSS_FILE):
+        with open(CSS_FILE, "w", encoding="utf-8") as f:
+            f.write(CSS_EJEMPLO)
+
+
+    if not os.path.exists(PLACEHOLDER_SVG):
+        with open(PLACEHOLDER_SVG, "w", encoding="utf-8") as f:
+            f.write(PLACEHOLDER_SVG_CONTENT)
+
+
+def leer_json():
+   
     if not os.path.exists(JSON_FILE):
         return []
 
@@ -63,7 +92,14 @@ def leer_json():
     except (json.JSONDecodeError, OSError):
         return []
 
-    playlists = data.get("playlists", [])
+ 
+    if isinstance(data, list):
+        playlists = data
+    elif isinstance(data, dict):
+        playlists = data.get("playlists", [])
+    else:
+        return []
+
     if not isinstance(playlists, list):
         return []
 
@@ -85,15 +121,15 @@ def leer_json():
             title = v.get("title", "Sin título")
             url = v.get("url", "#")
 
-            # En el JSON: "thumbnail_file": "thumbs/imagen.jpg" (relativo a /static)
+        
             thumb_rel = v.get("thumbnail_file", "")
             thumb_file = None
 
             if isinstance(thumb_rel, str) and thumb_rel.strip():
-                # Comprobamos si existe dentro de static/
                 thumb_path = os.path.join(STATIC_DIR, thumb_rel)
                 if os.path.exists(thumb_path):
-                    thumb_file = thumb_rel 
+                    thumb_file = thumb_rel
+
             lista_videos.append({
                 "title": title,
                 "url": url,
@@ -115,4 +151,5 @@ def home():
 
 
 if __name__ == "__main__":
+    asegurar_archivos()
     app.run(debug=True)
