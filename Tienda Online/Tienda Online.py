@@ -5,16 +5,14 @@ app.secret_key = "clave-muy-simple"
 
 
 def pagina_base(contenido_html: str) -> str:
-                                   
-    return f
+    return f"""
     <!doctype html>
     <html lang="es">
     <head>
         <meta charset="utf-8">
-                     <link rel="stylesheet" href="css/estilo.css">
+        <link rel="stylesheet" href="/static/css/estilo.css">
         <title>Tienda online</title>
         <style>
-          
         </style>
     </head>
     <body>
@@ -29,6 +27,7 @@ def pagina_base(contenido_html: str) -> str:
         </footer>
     </body>
     </html>
+    """
 
 
 
