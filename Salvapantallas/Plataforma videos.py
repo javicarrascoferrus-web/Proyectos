@@ -33,8 +33,8 @@ HTML = """
 
   {% for v in pl.videos %}
     <div class="video">
-      {% if v.thumb_url %}
-        <img src="{{ v.thumb_url }}" alt="miniatura">
+      {% if v.thumb_file %}
+        <img src="{{ url_for('static', filename=v.thumb_file) }}" alt="miniatura">
       {% else %}
         <img src="{{ url_for('static', filename='thumbs/placeholder.png') }}" alt="sin miniatura">
       {% endif %}
@@ -53,6 +53,7 @@ HTML = """
 """
 
 def leer_json():
+    """Lee canal_videos.json y devuelve una lista de playlists limpia y segura."""
     if not os.path.exists(JSON_FILE):
         return []
 
@@ -84,20 +85,20 @@ def leer_json():
             title = v.get("title", "Sin título")
             url = v.get("url", "#")
 
-            # En el JSON esperamos algo como: "thumbs/imagen.jpg"
-            thumb_rel = v.get("thumbnail_file", "")  # relativo a /static
-            thumb_url = None
+            # En el JSON: "thumbnail_file": "thumbs/imagen.jpg" (relativo a /static)
+            thumb_rel = v.get("thumbnail_file", "")
+            thumb_file = None
 
             if isinstance(thumb_rel, str) and thumb_rel.strip():
-                # Comprobamos existencia REAL en el disco dentro de static/
+                # Comprobamos si existe dentro de static/
                 thumb_path = os.path.join(STATIC_DIR, thumb_rel)
                 if os.path.exists(thumb_path):
-                    thumb_url = url_for("static", filename=thumb_rel)
+                    thumb_file = thumb_rel  # guardamos el path relativo para usarlo en la plantilla
 
             lista_videos.append({
                 "title": title,
                 "url": url,
-                "thumb_url": thumb_url
+                "thumb_file": thumb_file
             })
 
         resultado.append({
