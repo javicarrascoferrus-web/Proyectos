@@ -1,0 +1,46 @@
+{
+  "playlists": [
+    {
+      "title": "Programación Python",
+      "videos": [
+        {
+          "title": "Curso Python desde cero",
+          "url": "https://www.youtube.com/watch?v=kqtD5dpn9C8",
+          "thumbnail_file": "thumbs/python1.jpg"
+        },
+        {
+          "title": "Funciones en Python",
+          "url": "https://www.youtube.com/watch?v=9Os0o3wzS_I",
+          "thumbnail_file": "thumbs/python2.jpg"
+        }
+      ]
+    },
+
+    {
+      "title": "Flask Web",
+      "videos": [
+        {
+          "title": "Flask tutorial completo",
+          "url": "https://www.youtube.com/watch?v=Z1RJmh_OqeA",
+          "thumbnail_file": "thumbs/flask1.jpg"
+        },
+        {
+          "title": "Templates en Flask",
+          "url": "https://www.youtube.com/watch?v=QnDWIZuWYW0",
+          "thumbnail_file": "thumbs/flask2.jpg"
+        }
+      ]
+    },
+
+    {
+      "title": "Bases de datos",
+      "videos": [
+        {
+          "title": "SQL desde cero",
+          "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+          "thumbnail_file": "thumbs/sql1.jpg"
+        }
+      ]
+    }
+  ]
+}
