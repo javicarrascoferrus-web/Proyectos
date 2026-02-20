@@ -1,19 +1,20 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, url_for
 import json
 import os
 
 app = Flask(__name__)
 
-JSON_FILE = "canal_videos.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_FILE = os.path.join(BASE_DIR, "canal_videos.json")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 HTML = """
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
   <title>Videos</title>
-
 </head>
 <body>
 
@@ -32,15 +33,15 @@ HTML = """
 
   {% for v in pl.videos %}
     <div class="video">
-      {% if v.thumb_exists %}
-        <img src="{{ v.thumb }}" alt="miniatura">
+      {% if v.thumb_url %}
+        <img src="{{ v.thumb_url }}" alt="miniatura">
       {% else %}
-        <img src="" alt="">
+        <img src="{{ url_for('static', filename='thumbs/placeholder.png') }}" alt="sin miniatura">
       {% endif %}
 
       <div>
         <div class="title">{{ v.title }}</div>
-        <a href="{{ v.url }}" target="_blank">Abrir vídeo</a>
+        <a href="{{ v.url }}" target="_blank" rel="noopener">Abrir vídeo</a>
       </div>
     </div>
   {% endfor %}
@@ -55,31 +56,48 @@ def leer_json():
     if not os.path.exists(JSON_FILE):
         return []
 
-    with open(JSON_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        with open(JSON_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return []
 
     playlists = data.get("playlists", [])
+    if not isinstance(playlists, list):
+        return []
 
     resultado = []
     for pl in playlists:
+        if not isinstance(pl, dict):
+            continue
+
         pl_title = pl.get("title", "Sin título")
         videos = pl.get("videos", [])
+        if not isinstance(videos, list):
+            videos = []
 
         lista_videos = []
         for v in videos:
+            if not isinstance(v, dict):
+                continue
+
             title = v.get("title", "Sin título")
             url = v.get("url", "#")
-            thumb = v.get("thumbnail_file", "")
 
-            thumb_exists = False
-            if thumb and os.path.exists(thumb):
-                thumb_exists = True
+            # En el JSON esperamos algo como: "thumbs/imagen.jpg"
+            thumb_rel = v.get("thumbnail_file", "")  # relativo a /static
+            thumb_url = None
+
+            if isinstance(thumb_rel, str) and thumb_rel.strip():
+                # Comprobamos existencia REAL en el disco dentro de static/
+                thumb_path = os.path.join(STATIC_DIR, thumb_rel)
+                if os.path.exists(thumb_path):
+                    thumb_url = url_for("static", filename=thumb_rel)
 
             lista_videos.append({
                 "title": title,
                 "url": url,
-                "thumb": thumb,
-                "thumb_exists": thumb_exists
+                "thumb_url": thumb_url
             })
 
         resultado.append({
