@@ -8,16 +8,23 @@ PAGE = """
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="css/estilo.css">
-  <title>Ollama Web (simple)</title>
-
+  <link rel="stylesheet" href="/static/css/estilo.css">
+  <title>IA de Dietética (Ollama)</title>
+  <style>
+    body{font-family:system-ui;margin:24px;max-width:980px}
+    textarea,input{width:100%;padding:10px;margin:6px 0}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    pre{white-space:pre-wrap;background:#f4f4f5;padding:12px;border-radius:10px}
+    label{font-weight:600}
+    button{padding:10px 14px}
+  </style>
 </head>
 <body>
-  <h2>Ollama Web (simple)</h2>
+  <h2>IA de Dietética (Ollama)</h2>
 
   <form method="post">
-    <label>Petición (presupuesto + uso)</label>
-    <textarea name="prompt" rows="6">{{ prompt }}</textarea>
+    <label>Datos del usuario (objetivo + datos personales + preferencias)</label>
+    <textarea name="prompt" rows="10" placeholder="Ej: Tengo 24 años, hombre, 1.78m, 76kg. Objetivo: perder grasa sin perder músculo. Actividad: 4 días gym/semana. Alergias: ninguna. Prefiero dieta mediterránea, no como cerdo. Presupuesto medio. Horarios: desayuno 8h, comida 14h, cena 21h.">{{ prompt }}</textarea>
 
     <div class="row">
       <div>
@@ -30,7 +37,7 @@ PAGE = """
       </div>
     </div>
 
-    <button type="submit">Enviar</button>
+    <button type="submit">Generar plan</button>
   </form>
 
   {% if err %}
@@ -38,25 +45,46 @@ PAGE = """
   {% endif %}
 
   {% if out %}
-    <h3>Respuesta</h3>
+    <h3>Resultado</h3>
     <pre>{{ out }}</pre>
   {% endif %}
 </body>
 </html>
 """
 
-SYSTEM_TEMPLATE = """Eres un asesor informático. El usuario te dará un presupuesto y el uso del PC.
+SYSTEM_TEMPLATE = """Eres una IA de dietética y nutrición práctica (nivel divulgación), orientada a ayudar a personas sanas.
+Tu objetivo es crear planes de alimentación realistas y seguros.
 
-Tu respuesta DEBE cumplir estas reglas:
-1) Propón una configuración por componentes (CPU, placa, RAM, GPU si aplica, SSD, PSU, caja, disipación si aplica).
-2) Para cada componente indica un precio aproximado en EUR como número (sin rangos; un único valor).
-3) Incluye una tabla final "DESGLOSE" con columnas: Componente | Modelo | Precio_EUR.
-4) Después incluye un bloque "SUMA" con:
-   - Lista de precios usados (solo números) en una línea.
-   - Total_EUR = suma exacta de esos números.
-5) Vuelve a comprobar la suma: repite el total en una segunda línea "Total_verificado_EUR" y debe coincidir.
-6) Si el total supera el presupuesto, ajusta componentes hasta que Total_EUR <= presupuesto y deja margen para envío (si procede).
-7) No inventes monedas ni uses USD. No uses rangos. Solo un número por precio.
+REGLAS DE SEGURIDAD:
+- No diagnostiques ni trates enfermedades.
+- Si el usuario menciona diabetes, enfermedad renal/hepática, trastornos de conducta alimentaria, embarazo/lactancia, medicación relevante, o síntomas preocupantes,
+  responde que debe consultar a un profesional sanitario y ofrece recomendaciones generales no médicas.
+- No promuevas prácticas extremas (ayunos agresivos, dietas <1200 kcal sin supervisión, "detox", etc.).
+- No inventes estudios ni enlaces.
+
+TAREA:
+Con la información del usuario, crea:
+1) Estimación de calorías diarias (TDEE) y calorías objetivo según meta (déficit/superávit/mantenimiento)
+   - Si faltan datos (edad, sexo, altura, peso, actividad), pide lo mínimo necesario en 3-6 preguntas cortas.
+2) Reparto de macronutrientes diario (proteína, carbohidratos, grasa) en gramos y %.
+3) Plan de comidas de 7 días (desayuno, comida, cena + 1-2 snacks si procede).
+   - Para cada comida: alimentos y cantidades aproximadas (g, unidades) + calorías estimadas.
+4) Lista de la compra semanal agrupada por categorías.
+5) Sustituciones (al menos 6) por alergias/preferencias (p.ej. alternativas a lácteos, gluten, carne).
+6) Consejos prácticos (meal prep, hidratación, fibra, adherencia).
+7) Aviso final: “Esto es orientación general y no sustituye a un dietista-nutricionista”.
+
+FORMATO DE SALIDA (OBLIGATORIO):
+- Usa Markdown.
+- Incluye estas secciones EXACTAS con estos títulos:
+  ## Resumen
+  ## Calorías y objetivo
+  ## Macronutrientes
+  ## Plan semanal (7 días)
+  ## Lista de la compra
+  ## Sustituciones
+  ## Consejos
+  ## Aviso
 
 Usuario:
 {user_prompt}
@@ -78,12 +106,14 @@ def home():
         payload = {"model": model, "prompt": system_prompt, "stream": False}
 
         try:
-            r = requests.post(url, json=payload, timeout=60)
+            r = requests.post(url, json=payload, timeout=120)
             if not r.ok:
                 err = f"HTTP {r.status_code}: {r.text}"
             else:
                 data = r.json()
-                out = str(data.get("response", ""))
+                out = str(data.get("response", "")).strip()
+                if not out:
+                    err = "La IA devolvió una respuesta vacía."
         except Exception as e:
             err = str(e)
 
