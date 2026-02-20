@@ -53,7 +53,7 @@ HTML = """
 """
 
 def leer_json():
-    """Lee canal_videos.json y devuelve una lista de playlists limpia y segura."""
+ 
     if not os.path.exists(JSON_FILE):
         return []
 
@@ -93,8 +93,7 @@ def leer_json():
                 # Comprobamos si existe dentro de static/
                 thumb_path = os.path.join(STATIC_DIR, thumb_rel)
                 if os.path.exists(thumb_path):
-                    thumb_file = thumb_rel  # guardamos el path relativo para usarlo en la plantilla
-
+                    thumb_file = thumb_rel 
             lista_videos.append({
                 "title": title,
                 "url": url,
