@@ -1,8 +1,9 @@
 from flask import Flask, request, redirect, session, url_for, render_template_string
 import mysql.connector
+import os
 
 app = Flask(__name__)
-app.secret_key = "1234"  
+app.secret_key = "1234"  # en producción usa una clave larga y privada
 
 DB = {
     "host": "localhost",
@@ -37,11 +38,15 @@ def get_columnas():
 
 
 def es_excluida(col):
-
+    # Excluir PK
     if col["COLUMN_KEY"] == "PRI":
         return True
-    if col["COLUMN_DEFAULT"] == "CURRENT_TIMESTAMP":
+
+    # Excluir timestamps auto
+    default = (col["COLUMN_DEFAULT"] or "")
+    if isinstance(default, str) and "CURRENT_TIMESTAMP" in default.upper():
         return True
+
     return False
 
 
@@ -68,7 +73,6 @@ def get_pk():
     return None
 
 
-
 @app.route("/", methods=["GET", "POST"])
 def formulario():
     cols = [c for c in get_columnas() if not es_excluida(c)]
@@ -85,7 +89,7 @@ def formulario():
                 campos.append(nombre)
                 placeholders.append("%s")
 
-       
+                # tinyint -> checkbox
                 if "tinyint" in c["COLUMN_TYPE"].lower():
                     valores.append(1 if request.form.get(nombre) == "on" else 0)
                 else:
@@ -100,16 +104,15 @@ def formulario():
             cur.close()
             con.close()
 
-            msg = " Guardado"
+            msg = "✅ Guardado"
         except Exception as e:
-            msg = f" Error: {e}"
+            msg = f"❌ Error: {e}"
 
     html = """
     <!doctype html><html lang="es"><head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
     <title>Formulario</title>
-    
     </head><body>
       <div class="card">
         <div class="top">
@@ -129,7 +132,7 @@ def formulario():
 
               {% if "tinyint" in c.COLUMN_TYPE.lower() %}
                 <input type="checkbox" name="{{c.COLUMN_NAME}}">
-              {% elif "text" == c.COLUMN_TYPE.lower() %}
+              {% elif "text" in c.COLUMN_TYPE.lower() %}
                 <textarea name="{{c.COLUMN_NAME}}"></textarea>
               {% else %}
                 <input type="text" name="{{c.COLUMN_NAME}}">
@@ -142,7 +145,6 @@ def formulario():
     </body></html>
     """
     return render_template_string(html, cols=cols, msg=msg)
-
 
 
 @app.route("/admin/login", methods=["GET", "POST"])
@@ -194,12 +196,14 @@ def admin():
 
     crear_tabla_crm_si_no_existe()
     pk = get_pk()
-
+    if not pk:
+        return "❌ No se encontró PK en la tabla 'inscripciones'. Debe tener PRIMARY KEY."
 
     if request.method == "POST":
         rid = request.form.get("rid")
         estado = request.form.get("estado")
         if rid and estado:
+            rid = str(rid)
             con = conectar()
             cur = con.cursor()
             cur.execute("""
@@ -214,9 +218,9 @@ def admin():
 
     con = conectar()
     cur = con.cursor(dictionary=True)
-    cur.execute("SELECT id_registro, estado FROM crm_estados_inscripciones")
-    crm = {r["id_registro"]: r["estado"] for r in cur.fetchall()}
 
+    cur.execute("SELECT id_registro, estado FROM crm_estados_inscripciones")
+    crm = {str(r["id_registro"]): r["estado"] for r in cur.fetchall()}
 
     cur.execute("SELECT * FROM inscripciones")
     rows = cur.fetchall()
@@ -245,6 +249,9 @@ def admin():
           <div><a href="/">Formulario</a> | <a href="/admin/logout">Salir</a></div>
         </div>
 
+        {% if not rows %}
+          <p>No hay registros en inscripciones.</p>
+        {% else %}
         <table>
           <thead>
             <tr>
@@ -274,6 +281,7 @@ def admin():
             {% endfor %}
           </tbody>
         </table>
+        {% endif %}
       </div>
     </body></html>
     """
