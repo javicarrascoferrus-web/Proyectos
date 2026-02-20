@@ -14,9 +14,7 @@ from typing import Iterable, List, Tuple
 
 import requests
 
-# ----------------------------
-# Config por defecto
-# ----------------------------
+
 MODEL = "qwen2.5:7b-instruct-q4_0"
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 
@@ -26,7 +24,7 @@ SLEEP_BETWEEN_CALLS = 0.6
 
 MAX_CONTEXT_CHARS = 12000  # recorta el documento para no hacer prompts gigantes
 
-# Fallback robusto por si __file__ no existe (notebooks/otros runners)
+
 SCRIPT_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DOCS_DIR = SCRIPT_DIR / "documentos"
 DB_PATH = SCRIPT_DIR / "blog.sqlite"
