@@ -5,7 +5,7 @@ app.secret_key = "clave-muy-simple"  #Necesario para usar sesiones
 
 
 def pagina_base(contenido_html: str) -> str:
-                                    #Plantilla HTML
+                                   
     return f
     <!doctype html>
     <html lang="es">
