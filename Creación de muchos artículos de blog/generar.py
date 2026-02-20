@@ -184,7 +184,7 @@ def insert_many(conn: sqlite3.Connection, rows: Iterable[Tuple[str, str, str, st
         rows,
     )
  
-    return conn.total_changes  # cambios acumulados (usaremos delta fuera)
+    return conn.total_changes  
 
 
 
