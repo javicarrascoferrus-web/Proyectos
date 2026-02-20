@@ -28,9 +28,7 @@ WIDTH, HEIGHT = 1024, 576
 SEED_BASE = 12345
 
 
-# -------------------------
-# DATA
-# -------------------------
+
 @dataclass
 class ImgNode:
     el: ET.Element
@@ -39,9 +37,6 @@ class ImgNode:
     src: str
 
 
-# -------------------------
-# UTILS
-# -------------------------
 _slug_rx = re.compile(r"[^\w\s-]", flags=re.UNICODE)
 _space_rx = re.compile(r"[\s_-]+")
 
@@ -77,7 +72,7 @@ def ollama_json(system: str, user: str, temp: float = 0.4) -> dict:
     try:
         return extract_json(txt)
     except Exception:
-        # Segundo intento más estricto
+
         payload["options"]["temperature"] = 0.2
         payload["prompt"] = user + "\n\nReturn ONLY valid JSON. No extra text."
         r2 = requests.post(OLLAMA_URL, json=payload, timeout=OLLAMA_TIMEOUT)
@@ -86,9 +81,7 @@ def ollama_json(system: str, user: str, temp: float = 0.4) -> dict:
         return extract_json(txt2)
 
 
-# -------------------------
-# XML -> CONTEXT + IMAGES
-# -------------------------
+
 SECTION_PATHS = {
     "hero": "./hero",
     "problem": "./problem",
@@ -131,7 +124,7 @@ def build_context(root: ET.Element) -> dict:
     }
 
 def detect_section(root: ET.Element, src: str) -> str:
-    # Busca si existe una imagen con ese src dentro de cada sección
+
     for section, base in SECTION_PATHS.items():
         if root.find(f"{base}//image[@src='{src}']") is not None:
             return section
@@ -146,9 +139,7 @@ def gather_images(root: ET.Element) -> list[ImgNode]:
     return out
 
 
-# -------------------------
-# PROMPTS
-# -------------------------
+
 def get_prompts(context: dict, imgs: list[ImgNode]) -> list[dict]:
     system = (
         "You write Stable Diffusion prompts for SaaS/edtech marketing visuals. "
@@ -183,9 +174,7 @@ def get_prompts(context: dict, imgs: list[ImgNode]) -> list[dict]:
     return prompts
 
 
-# -------------------------
-# DIFFUSERS
-# -------------------------
+
 def load_sd() -> StableDiffusionPipeline:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else torch.float32
@@ -224,13 +213,11 @@ def render_all(pipe: StableDiffusionPipeline, imgs: list[ImgNode], prompts: list
             )
             res.images[0].save(out_path)
 
-        # Actualiza src en el XML al path relativo
+
         im.el.set("src", str(OUT_DIR / fname))
 
 
-# -------------------------
-# MAIN
-# -------------------------
+
 def main() -> None:
     if not XML_IN.exists():
         raise FileNotFoundError(f"No existe {XML_IN.resolve()}")
