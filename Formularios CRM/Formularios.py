@@ -38,11 +38,11 @@ def get_columnas():
 
 
 def es_excluida(col):
-    # Excluir PK
+
     if col["COLUMN_KEY"] == "PRI":
         return True
 
-    # Excluir timestamps auto
+    
     default = (col["COLUMN_DEFAULT"] or "")
     if isinstance(default, str) and "CURRENT_TIMESTAMP" in default.upper():
         return True
@@ -89,7 +89,7 @@ def formulario():
                 campos.append(nombre)
                 placeholders.append("%s")
 
-                # tinyint -> checkbox
+ 
                 if "tinyint" in c["COLUMN_TYPE"].lower():
                     valores.append(1 if request.form.get(nombre) == "on" else 0)
                 else:
@@ -104,9 +104,9 @@ def formulario():
             cur.close()
             con.close()
 
-            msg = "✅ Guardado"
+            msg = " Guardado"
         except Exception as e:
-            msg = f"❌ Error: {e}"
+            msg = f" Error: {e}"
 
     html = """
     <!doctype html><html lang="es"><head>
@@ -197,7 +197,7 @@ def admin():
     crear_tabla_crm_si_no_existe()
     pk = get_pk()
     if not pk:
-        return "❌ No se encontró PK en la tabla 'inscripciones'. Debe tener PRIMARY KEY."
+        return " No se encontró PK en la tabla 'inscripciones'. Debe tener PRIMARY KEY."
 
     if request.method == "POST":
         rid = request.form.get("rid")
