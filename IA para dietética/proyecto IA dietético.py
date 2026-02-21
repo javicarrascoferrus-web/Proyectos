@@ -86,9 +86,13 @@ FORMATO DE SALIDA (OBLIGATORIO):
   ## Consejos
   ## Aviso
 
-Usuario:
-{user_prompt}
+Usuario: {user_prompt}
 """
+
+def safe_format_system_template(user_prompt: str) -> str:
+    # Evita que llaves del usuario rompan .format()
+    user_prompt = user_prompt.replace("{", "{{").replace("}", "}}")
+    return SYSTEM_TEMPLATE.format(user_prompt=user_prompt)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -100,7 +104,7 @@ def home():
 
     if request.method == "POST":
         user_prompt = (prompt or "").strip()
-        system_prompt = SYSTEM_TEMPLATE.format(user_prompt=user_prompt)
+        system_prompt = safe_format_system_template(user_prompt)
 
         url = baseUrl.rstrip("/") + "/api/generate"
         payload = {"model": model, "prompt": system_prompt, "stream": False}
@@ -110,14 +114,22 @@ def home():
             if not r.ok:
                 err = f"HTTP {r.status_code}: {r.text}"
             else:
-                data = r.json()
-                out = str(data.get("response", "")).strip()
-                if not out:
-                    err = "La IA devolvió una respuesta vacía."
+                try:
+                    data = r.json()
+                except ValueError:
+                    err = f"Respuesta no JSON: {r.text[:500]}"
+                else:
+                    out = str(data.get("response", "")).strip()
+                    if not out:
+                        err = "La IA devolvió una respuesta vacía."
+        except requests.RequestException as e:
+            err = f"Error de red: {e}"
         except Exception as e:
             err = str(e)
 
-    return render_template_string(PAGE, prompt=prompt, model=model, baseUrl=baseUrl, out=out, err=err)
+    return render_template_string(
+        PAGE, prompt=prompt, model=model, baseUrl=baseUrl, out=out, err=err
+    )
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, debug=True)
