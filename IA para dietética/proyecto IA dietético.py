@@ -90,7 +90,7 @@ Usuario: {user_prompt}
 """
 
 def safe_format_system_template(user_prompt: str) -> str:
-    # Evita que llaves del usuario rompan .format()
+  
     user_prompt = user_prompt.replace("{", "{{").replace("}", "}}")
     return SYSTEM_TEMPLATE.format(user_prompt=user_prompt)
 
