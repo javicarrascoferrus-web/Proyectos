@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="header">
+            <h1>Panel de administración</h1>
+            <p>Listado de usuarios que han realizado el test</p>
+        </div>
+
+        <div class="acciones-admin">
+            <a href="{{ url_for('logout') }}" class="btn-secundario">
+                Cerrar sesión
+            </a>
+        </div>
+
+        {% if intentos %}
+        <table class="tabla-admin">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Curso</th>
+                    <th>Puntos</th>
+                    <th>Nivel</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for intento in intentos %}
+                <tr>
+                    <td>{{ intento.id }}</td>
+                    <td>{{ intento.nombre }}</td>
+                    <td>{{ intento.email }}</td>
+                    <td>{{ intento.telefono }}</td>
+                    <td>{{ intento.curso }}</td>
+                    <td>{{ intento.puntos }}</td>
+                    <td>{{ intento.nivel }}</td>
+                    <td>{{ intento.fecha }}</td>
+                    <td>
+                        <a href="{{ url_for('informe', intento_id=intento.id) }}">
+                            Ver detalle
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <p>No hay intentos registrados todavía.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>
