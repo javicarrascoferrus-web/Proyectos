@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Mini CAD</title>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:Arial,sans-serif;background:#f0f2f5;color:#222;}
+        header{background:white;border-bottom:1px solid #ccc;padding:15px 20px;}
+        header h1{font-size:20px;}
+        .barra{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:15px 20px;background:white;border-bottom:1px solid #ccc;}
+        .barra label{display:flex;align-items:center;gap:8px;font-size:14px;}
+        .barra button{padding:8px 12px;border:1px solid #999;background:#fff;cursor:pointer;}
+        .barra button.activo{background:#222;color:white;border-color:#222;}
+        #lienzo{display:block;margin:20px auto;background:white;border:1px solid #999;cursor:crosshair;}
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Mini programa CAD</h1>
+</header>
+
+<div class="barra">
+    <button class="herramienta activo" data-tool="linea">Línea</button>
+    <button class="herramienta" data-tool="rectangulo">Rectángulo</button>
+    <button class="herramienta" data-tool="circulo">Círculo</button>
+
+    <label>
+        Color:
+        <input type="color" id="color" value="#000000">
+    </label>
+
+    <label>
+        Grosor:
+        <input type="range" id="grosor" min="1" max="10" value="2">
+        <span id="valorGrosor">2</span>
+    </label>
+
+    <button id="limpiar">Limpiar</button>
+</div>
+
+<canvas id="lienzo" width="1200" height="700"></canvas>
+
+<script>
+    let canvas = document.getElementById("lienzo")
+    let contexto = canvas.getContext("2d")
+
+    let colorInput = document.getElementById("color")
+    let grosorInput = document.getElementById("grosor")
+    let valorGrosor = document.getElementById("valorGrosor")
+    let botonesHerramienta = document.querySelectorAll(".herramienta")
+    let botonLimpiar = document.getElementById("limpiar")
+
+    let herramientaActual = "linea"
+    let dibujando = false
+    let inicioX = 0
+    let inicioY = 0
+
+    let figuras = []
+
+    grosorInput.addEventListener("input", function(){
+        valorGrosor.textContent = grosorInput.value
+    })
+
+    botonesHerramienta.forEach(function(boton){
+        boton.addEventListener("click", function(){
+            botonesHerramienta.forEach(function(otro){
+                otro.classList.remove("activo")
+            })
+
+            boton.classList.add("activo")
+            herramientaActual = boton.dataset.tool
+        })
+    })
+
+    botonLimpiar.addEventListener("click", function(){
+        figuras = []
+        redibujar()
+    })
+
+    canvas.addEventListener("mousedown", function(e){
+        dibujando = true
+        inicioX = e.offsetX
+        inicioY = e.offsetY
+    })
+
+    canvas.addEventListener("mousemove", function(e){
+        if(!dibujando){return}
+
+        let actualX = e.offsetX
+        let actualY = e.offsetY
+
+        redibujar()
+        dibujarFiguraTemporal(inicioX, inicioY, actualX, actualY)
+    })
+
+    canvas.addEventListener("mouseup", function(e){
+        if(!dibujando){return}
+        dibujando = false
+
+        let finX = e.offsetX
+        let finY = e.offsetY
+
+        figuras.push({
+            tipo:herramientaActual,
+            x1:inicioX,
+            y1:inicioY,
+            x2:finX,
+            y2:finY,
+            color:colorInput.value,
+            grosor:parseInt(grosorInput.value)
+        })
+
+        redibujar()
+    })
+
+    canvas.addEventListener("mouseleave", function(){
+        if(dibujando){
+            dibujando = false
+            redibujar()
+        }
+    })
+
+    function redibujar(){
+        contexto.clearRect(0,0,canvas.width,canvas.height)
+
+        figuras.forEach(function(figura){
+            dibujarFigura(figura)
+        })
+    }
+
+    function prepararTrazo(figura){
+        contexto.strokeStyle = figura.color
+        contexto.lineWidth = figura.grosor
+        contexto.lineCap = "round"
+        contexto.lineJoin = "round"
+    }
+
+    function dibujarFigura(figura){
+        prepararTrazo(figura)
+
+        if(figura.tipo == "linea"){
+            contexto.beginPath()
+            contexto.moveTo(figura.x1, figura.y1)
+            contexto.lineTo(figura.x2, figura.y2)
+            contexto.stroke()
+        }
+
+        if(figura.tipo == "rectangulo"){
+            let x = Math.min(figura.x1, figura.x2)
+            let y = Math.min(figura.y1, figura.y2)
+            let ancho = Math.abs(figura.x2 - figura.x1)
+            let alto = Math.abs(figura.y2 - figura.y1)
+
+            contexto.strokeRect(x, y, ancho, alto)
+        }
+
+        if(figura.tipo == "circulo"){
+            let dx = figura.x2 - figura.x1
+            let dy = figura.y2 - figura.y1
+            let radio = Math.sqrt(dx * dx + dy * dy)
+
+            contexto.beginPath()
+            contexto.arc(figura.x1, figura.y1, radio, 0, Math.PI * 2)
+            contexto.stroke()
+        }
+    }
+
+    function dibujarFiguraTemporal(x1, y1, x2, y2){
+        let figura = {
+            tipo:herramientaActual,
+            x1:x1,
+            y1:y1,
+            x2:x2,
+            y2:y2,
+            color:colorInput.value,
+            grosor:parseInt(grosorInput.value)
+        }
+
+        dibujarFigura(figura)
+    }
+</script>
+
+</body>
+</html>
