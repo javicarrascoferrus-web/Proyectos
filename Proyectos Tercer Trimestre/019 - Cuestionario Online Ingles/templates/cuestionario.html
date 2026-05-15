@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test de nivel de inglés</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="header">
+            <h1>Test de nivel de inglés</h1>
+            <p>Completa tus datos y responde las preguntas para conocer tu nivel aproximado.</p>
+        </div>
+
+        <form method="POST" class="formulario">
+
+            <section class="datos">
+                <div class="form-group">
+                    <label>Nombre y apellidos</label>
+                    <input type="text" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Curso en el que estás interesado/a</label>
+                    <input type="text" name="curso" required>
+                </div>
+            </section>
+
+            <section class="preguntas">
+                {% for pregunta in preguntas %}
+                    {% set index = loop.index0 %}
+
+                    <div class="pregunta-card">
+                        <h3>
+                            <span>{{ loop.index }}</span>
+                            {{ pregunta.pregunta }}
+                        </h3>
+
+                        <div class="opciones">
+                            <label>
+                                <input type="radio" name="pregunta_{{ index }}" value="{{ pregunta.respuesta_1 }}" required>
+                                {{ pregunta.respuesta_1 }}
+                            </label>
+
+                            <label>
+                                <input type="radio" name="pregunta_{{ index }}" value="{{ pregunta.respuesta_2 }}" required>
+                                {{ pregunta.respuesta_2 }}
+                            </label>
+
+                            <label>
+                                <input type="radio" name="pregunta_{{ index }}" value="{{ pregunta.respuesta_3 }}" required>
+                                {{ pregunta.respuesta_3 }}
+                            </label>
+
+                            <label>
+                                <input type="radio" name="pregunta_{{ index }}" value="{{ pregunta.respuesta_4 }}" required>
+                                {{ pregunta.respuesta_4 }}
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+
+            <button type="submit" class="btn-principal">
+                Enviar respuestas
+            </button>
+
+        </form>
+
+        <div class="admin-link">
+            <a href="{{ url_for('admin_login') }}">Acceso administración</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
