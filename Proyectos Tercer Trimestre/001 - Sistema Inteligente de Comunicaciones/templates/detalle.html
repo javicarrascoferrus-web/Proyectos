@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<header class="cabecera">
+    <a href="/?categoria={{ correo.categoria }}&cantidad={{ cantidad }}">
+        ← Volver
+    </a>
+
+    <h1>
+        {{ correo.asunto if correo.asunto else "Sin asunto" }}
+    </h1>
+
+    <p>
+        {{ correo.fecha }}
+    </p>
+</header>
+
+<section class="detalle">
+
+    <div class="bloque">
+        <h3>Remitente</h3>
+        <p>{{ correo.remitente }}</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Categoría</h3>
+        <p>{{ correo.categoria }}</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Prioridad</h3>
+        <p>{{ correo.prioridad }}/5</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Resumen automático</h3>
+        <p>{{ correo.resumen }}</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Motivo de clasificación</h3>
+        <p>{{ correo.motivo }}</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Acción recomendada</h3>
+        <p>{{ correo.accion }}</p>
+    </div>
+
+    <div class="bloque">
+        <h3>Contenido original</h3>
+        <pre>{{ correo.contenido }}</pre>
+    </div>
+
+</section>
+
+{% endblock %}
