@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f3;
+    color: #1f2937;
+}
+
+.contenedor {
+    width: min(850px, 92%);
+    margin: 40px auto;
+}
+
+.cabecera {
+    background: #183c4a;
+    color: white;
+    padding: 25px;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.cabecera h1 {
+    margin-bottom: 6px;
+}
+
+.cabecera p {
+    color: #cbd5e1;
+}
+
+.cabecera button {
+    background: #f59e0b;
+    color: #111827;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chat-box {
+    background: white;
+    min-height: 420px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-left: 1px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+}
+
+.mensaje {
+    max-width: 75%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    line-height: 1.5;
+}
+
+.usuario {
+    align-self: flex-end;
+    background: #dbeafe;
+    color: #1e3a8a;
+}
+
+.bot {
+    align-self: flex-start;
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.formulario {
+    background: #ffffff;
+    padding: 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 0 0 18px 18px;
+}
+
+.formulario form {
+    display: flex;
+    gap: 12px;
+}
+
+textarea {
+    flex: 1;
+    min-height: 60px;
+    resize: vertical;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font: inherit;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #183c4a;
+}
+
+.formulario button {
+    background: #183c4a;
+    color: white;
+    border: none;
+    padding: 0 22px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.formulario button:hover,
+.cabecera button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 650px) {
+    .cabecera {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .formulario form {
+        flex-direction: column;
+    }
+
+    .mensaje {
+        max-width: 95%;
+    }
+}
