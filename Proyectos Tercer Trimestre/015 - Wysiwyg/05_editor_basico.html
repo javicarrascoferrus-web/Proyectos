@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Editor básico</title>
+    <style>
+        body{
+            font-family:Arial, sans-serif;
+            padding:20px;
+        }
+
+        #barra{
+            margin-bottom:10px;
+        }
+
+        button{
+            padding:8px 12px;
+            border:1px solid lightgrey;
+            background:white;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:rgb(245,245,245);
+        }
+
+        #contenedor{
+            width:400px;
+            height:300px;
+            border:1px solid lightgrey;
+            outline:none;
+            padding:20px;
+            overflow:auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="barra">
+    <button id="negrita"><b>B</b></button>
+</div>
+
+<div id="contenedor" contenteditable="true"></div>
+
+<script>
+    let boton_negrita = document.querySelector("#negrita")
+    let contenedor = document.querySelector("#contenedor")
+    let ultimoRango = null
+
+    function guardarRango(){
+        let seleccion = window.getSelection()
+
+        if(seleccion.rangeCount > 0){
+            ultimoRango = seleccion.getRangeAt(0).cloneRange()
+        }
+    }
+
+    function restaurarRango(){
+        if(ultimoRango){
+            let seleccion = window.getSelection()
+            seleccion.removeAllRanges()
+            seleccion.addRange(ultimoRango)
+        }
+    }
+
+    function obtenerSpanNegrita(nodo){
+        while(nodo && nodo !== contenedor){
+            if(
+                nodo.nodeType === 1 &&
+                nodo.tagName === "SPAN" &&
+                nodo.style.fontWeight === "bold"
+            ){
+                return nodo
+            }
+
+            nodo = nodo.parentNode
+        }
+
+        return null
+    }
+
+    function ponerCursorDespuesDe(nodo){
+        let rango = document.createRange()
+        let seleccion = window.getSelection()
+
+        rango.setStartAfter(nodo)
+        rango.collapse(true)
+
+        seleccion.removeAllRanges()
+        seleccion.addRange(rango)
+
+        guardarRango()
+    }
+
+    function aplicarNegritaSeleccion(){
+        restaurarRango()
+
+        let seleccion = window.getSelection()
+
+        if(seleccion.rangeCount === 0) return
+
+        let rango = seleccion.getRangeAt(0)
+
+        if(!contenedor.contains(rango.commonAncestorContainer)) return
+
+        if(rango.collapsed){
+            let span = document.createElement("span")
+            span.style.fontWeight = "bold"
+            span.innerHTML = "&#8203;"
+
+            rango.insertNode(span)
+            ponerCursorDespuesDe(span)
+            return
+        }
+
+        let nodoInicio = rango.startContainer
+        let spanExistente = obtenerSpanNegrita(nodoInicio)
+
+        if(spanExistente && spanExistente.textContent === rango.toString()){
+            let texto = document.createTextNode(spanExistente.textContent)
+            spanExistente.parentNode.replaceChild(texto, spanExistente)
+
+            let nuevoRango = document.createRange()
+            nuevoRango.setStartAfter(texto)
+            nuevoRango.collapse(true)
+
+            seleccion.removeAllRanges()
+            seleccion.addRange(nuevoRango)
+
+            guardarRango()
+            return
+        }
+
+        let contenidoSeleccionado = rango.extractContents()
+        let span = document.createElement("span")
+
+        span.style.fontWeight = "bold"
+        span.appendChild(contenidoSeleccionado)
+
+        rango.insertNode(span)
+
+        let nuevoRango = document.createRange()
+        nuevoRango.selectNodeContents(span)
+
+        seleccion.removeAllRanges()
+        seleccion.addRange(nuevoRango)
+
+        guardarRango()
+    }
+
+    contenedor.addEventListener("mouseup", guardarRango)
+    contenedor.addEventListener("keyup", guardarRango)
+    contenedor.addEventListener("input", guardarRango)
+    contenedor.addEventListener("focus", guardarRango)
+
+    boton_negrita.onclick = function(){
+        aplicarNegritaSeleccion()
+        contenedor.focus()
+    }
+</script>
+
+</body>
+</html>
