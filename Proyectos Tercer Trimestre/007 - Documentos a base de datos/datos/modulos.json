@@ -1,0 +1,37 @@
+{
+  "modulos": [
+    {
+      "nombre": "Programación",
+      "codigo": "0485",
+      "horas": 256,
+      "resultados": [
+        "Reconoce la estructura de un programa informático.",
+        "Escribe y prueba programas sencillos.",
+        "Utiliza estructuras de control."
+      ],
+      "contenidos": [
+        "Variables",
+        "Condicionales",
+        "Bucles",
+        "Funciones",
+        "Programación orientada a objetos"
+      ]
+    },
+    {
+      "nombre": "Bases de datos",
+      "codigo": "0484",
+      "horas": 192,
+      "resultados": [
+        "Diseña modelos entidad-relación.",
+        "Crea bases de datos relacionales.",
+        "Realiza consultas SQL."
+      ],
+      "contenidos": [
+        "Modelo relacional",
+        "SQL",
+        "Consultas",
+        "Normalización"
+      ]
+    }
+  ]
+}
