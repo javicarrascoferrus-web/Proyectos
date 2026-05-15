@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOCARSA Legal</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-content">
+        <h2>JOCARSA</h2>
+
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#contacto">Contacto</a>
+            <a href="#legal">Legal</a>
+        </nav>
+    </div>
+</header>
+
+<section id="inicio" class="hero">
+    <div class="container">
+        <h1>Soluciones digitales para empresas</h1>
+        <p>
+            JOCARSA ayuda a pequeñas empresas a mejorar su trabajo diario mediante automatización,
+            herramientas digitales e inteligencia artificial aplicada.
+        </p>
+        <a href="#contacto" class="btn">Contactar</a>
+    </div>
+</section>
+
+<section id="servicios" class="section">
+    <div class="container">
+        <h2>Servicios</h2>
+
+        <div class="cards">
+            <article>
+                <h3>Automatización</h3>
+                <p>Digitalización de tareas repetitivas para ahorrar tiempo.</p>
+            </article>
+
+            <article>
+                <h3>Inteligencia artificial</h3>
+                <p>Asistentes, clasificación de información y apoyo a procesos internos.</p>
+            </article>
+
+            <article>
+                <h3>Atención al cliente</h3>
+                <p>Formularios, chatbots y sistemas de respuesta rápida.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="container">
+        <h2>Forma de trabajo</h2>
+
+        <div class="steps">
+            <div>
+                <span>1</span>
+                <h3>Análisis</h3>
+                <p>Se revisan las necesidades del cliente.</p>
+            </div>
+
+            <div>
+                <span>2</span>
+                <h3>Propuesta</h3>
+                <p>Se plantea una solución sencilla y realista.</p>
+            </div>
+
+            <div>
+                <span>3</span>
+                <h3>Desarrollo</h3>
+                <p>Se crea la herramienta o página web.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="section contacto">
+    <div class="container contacto-grid">
+        <div>
+            <h2>Contacto</h2>
+            <p>
+                Rellena el formulario para solicitar información sobre los servicios.
+            </p>
+        </div>
+
+        <form id="formulario">
+            <input type="text" placeholder="Nombre" required>
+            <input type="text" placeholder="Empresa" required>
+            <input type="email" placeholder="Email" required>
+
+            <select required>
+                <option value="">Servicio de interés</option>
+                <option>Automatización</option>
+                <option>Inteligencia artificial</option>
+                <option>Diseño web</option>
+                <option>Otro</option>
+            </select>
+
+            <textarea rows="5" placeholder="Mensaje" required></textarea>
+
+            <label class="checkbox">
+                <input type="checkbox" required>
+                Acepto la política de privacidad.
+            </label>
+
+            <button class="btn" type="submit">Enviar</button>
+        </form>
+    </div>
+</section>
+
+<section id="legal" class="section">
+    <div class="container">
+        <h2>Información legal</h2>
+
+        <div class="legal-box">
+            <h3>Aviso legal</h3>
+            <p>
+                Esta página pertenece a JOCARSA. Su contenido tiene carácter informativo
+                y está orientado a mostrar servicios digitales para empresas.
+            </p>
+        </div>
+
+        <div class="legal-box">
+            <h3>Política de privacidad</h3>
+            <p>
+                Los datos introducidos en el formulario se utilizan únicamente para responder
+                a la solicitud enviada por el usuario.
+            </p>
+        </div>
+
+        <div class="legal-box">
+            <h3>Política de cookies</h3>
+            <p>
+                Esta web no utiliza cookies de seguimiento ni publicidad. En caso de añadirse
+                en el futuro, se informaría al usuario.
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>JOCARSA · Web corporativa con información legal</p>
+</footer>
+
+<script>
+document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
+    alert("Formulario enviado correctamente.");
+});
+</script>
+
+</body>
+</html>
