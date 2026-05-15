@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente con Avatar 3D</title>
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<main class="contenedor">
+
+    <section class="chat">
+        <h1>Asistente Virtual</h1>
+
+        <div id="respuesta" class="respuesta">
+            Hola, soy tu asistente virtual. Puedes escribirme o usar el micrófono.
+        </div>
+
+        <form id="formulario">
+            <input 
+                type="text" 
+                id="mensaje" 
+                placeholder="Escribe tu mensaje..."
+                autocomplete="off"
+            >
+
+            <button type="submit">Enviar</button>
+            <button type="button" id="mic">🎤</button>
+            <button type="button" id="voz">🔊</button>
+        </form>
+
+        <small id="estado"></small>
+    </section>
+
+    <section class="avatar">
+        <a-scene embedded background="color: #ffffff">
+            <a-assets>
+                <a-asset-item id="avatarModelo" src="static/avatar.glb"></a-asset-item>
+            </a-assets>
+
+            <a-entity light="type: ambient; intensity: 0.7"></a-entity>
+            <a-entity light="type: directional; intensity: 1" position="2 4 2"></a-entity>
+
+            <a-plane rotation="-90 0 0" width="8" height="8" color="#dddddd"></a-plane>
+
+            <a-entity 
+                id="avatar"
+                gltf-model="#avatarModelo"
+                position="0 1 -2"
+                scale="2 2 2"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 12000">
+            </a-entity>
+
+            <a-camera position="0 1.2 1.8"></a-camera>
+        </a-scene>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
