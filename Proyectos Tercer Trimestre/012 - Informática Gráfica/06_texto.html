@@ -1,0 +1,21 @@
+
+<!doctype html>
+<html>
+<head>
+    <style>
+        canvas{border:1px solid grey;}
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+
+    <script>
+        let lienzo = document.querySelector("canvas")
+        lienzo.width = 512
+        lienzo.height = 512
+
+        let contexto = lienzo.getContext("2d")
+        contexto.fillText("hola",20,20)
+    </script>
+</body>
+</html>
