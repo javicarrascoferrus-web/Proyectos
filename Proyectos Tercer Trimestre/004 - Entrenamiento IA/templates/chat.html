@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente JOCARSA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="contenedor">
+
+    <header class="cabecera">
+        <h1>Asistente Virtual JOCARSA</h1>
+        <p>Consulta información sobre nuestros servicios</p>
+
+        <form action="/reiniciar" method="POST">
+            <button type="submit">Reiniciar chat</button>
+        </form>
+    </header>
+
+    <section class="chat-box">
+
+        {% if conversacion|length == 0 %}
+            <div class="mensaje bot">
+                Hola, soy el asistente virtual de JOCARSA.
+            </div>
+        {% endif %}
+
+        {% for mensaje in conversacion %}
+            <div class="mensaje {{ mensaje.tipo }}">
+                {{ mensaje.texto }}
+            </div>
+        {% endfor %}
+
+    </section>
+
+    <section class="formulario">
+        <form action="/enviar" method="POST">
+
+            <textarea 
+                name="mensaje"
+                placeholder="Escribe tu consulta..."
+                required>
+            </textarea>
+
+            <button type="submit">
+                Enviar
+            </button>
+
+        </form>
+    </section>
+
+</div>
+
+</body>
+</html>
