@@ -1,0 +1,105 @@
+const formulario = document.getElementById("formulario");
+const input = document.getElementById("mensaje");
+const respuesta = document.getElementById("respuesta");
+const estado = document.getElementById("estado");
+const botonMic = document.getElementById("mic");
+const botonVoz = document.getElementById("voz");
+
+function generarRespuesta(texto) {
+    const mensaje = texto.toLowerCase();
+
+    if (mensaje.includes("hola") || mensaje.includes("buenas")) {
+        return "Hola, encantado de ayudarte. Soy un asistente virtual con avatar 3D.";
+    }
+
+    if (mensaje.includes("servicio") || mensaje.includes("servicios")) {
+        return "Puedo ayudarte con información sobre automatización, inteligencia artificial, páginas web y atención al cliente.";
+    }
+
+    if (mensaje.includes("contacto") || mensaje.includes("correo")) {
+        return "Puedes contactar con la empresa mediante el formulario de contacto o correo electrónico.";
+    }
+
+    if (mensaje.includes("ia") || mensaje.includes("inteligencia artificial")) {
+        return "La inteligencia artificial permite automatizar tareas, responder consultas y mejorar procesos empresariales.";
+    }
+
+    return "No tengo una respuesta exacta, pero puedo ayudarte con temas relacionados con servicios digitales, IA o contacto.";
+}
+
+formulario.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const texto = input.value.trim();
+
+    if (texto === "") {
+        return;
+    }
+
+    const contestacion = generarRespuesta(texto);
+
+    respuesta.innerHTML += `<p><strong>Tú:</strong> ${texto}</p>`;
+    respuesta.innerHTML += `<p><strong>Asistente:</strong> ${contestacion}</p>`;
+
+    input.value = "";
+    respuesta.scrollTop = respuesta.scrollHeight;
+
+    leerTexto(contestacion);
+});
+
+function leerTexto(texto) {
+    if (!("speechSynthesis" in window)) {
+        estado.textContent = "Tu navegador no soporta lectura por voz.";
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const voz = new SpeechSynthesisUtterance(texto);
+    voz.lang = "es-ES";
+    voz.rate = 1;
+    voz.pitch = 1;
+
+    speechSynthesis.speak(voz);
+}
+
+botonVoz.addEventListener("click", function() {
+    const texto = respuesta.innerText;
+
+    if (texto.trim() !== "") {
+        leerTexto(texto);
+    }
+});
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+    const reconocimiento = new SpeechRecognition();
+    reconocimiento.lang = "es-ES";
+    reconocimiento.continuous = false;
+    reconocimiento.interimResults = false;
+
+    botonMic.addEventListener("click", function() {
+        estado.textContent = "Escuchando...";
+        reconocimiento.start();
+    });
+
+    reconocimiento.onresult = function(event) {
+        const texto = event.results[0][0].transcript;
+        input.value = texto;
+        estado.textContent = "Texto detectado.";
+    };
+
+    reconocimiento.onerror = function() {
+        estado.textContent = "No se pudo usar el micrófono.";
+    };
+
+    reconocimiento.onend = function() {
+        setTimeout(() => {
+            estado.textContent = "";
+        }, 1500);
+    };
+} else {
+    botonMic.disabled = true;
+    estado.textContent = "El navegador no soporta reconocimiento de voz.";
+}
