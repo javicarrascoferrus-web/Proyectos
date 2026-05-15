@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Web JOCARSA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="cabecera">
+    <div class="contenedor cabecera-contenido">
+
+        <div class="marca">
+            <img src="https://via.placeholder.com/150" alt="logo">
+            <div>
+                <h2>JOCARSA</h2>
+                <p>Soluciones digitales para empresas</p>
+            </div>
+        </div>
+
+        <nav class="menu">
+            <a href="#inicio">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#proceso">Proceso</a>
+            <a href="#demo">Demo</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<section class="hero" id="inicio">
+    <div class="contenedor hero-grid">
+
+        <div>
+            <p class="etiqueta">Transformación digital para empresas</p>
+
+            <h1>
+                Automatización e inteligencia artificial para mejorar tu negocio
+            </h1>
+
+            <p class="texto-principal">
+                Ayudamos a pequeñas y medianas empresas a optimizar procesos
+                mediante automatización, asistentes virtuales y análisis de datos.
+            </p>
+
+            <div class="acciones">
+                <a href="#contacto" class="boton principal">
+                    Solicitar información
+                </a>
+
+                <a href="#servicios" class="boton secundario">
+                    Ver servicios
+                </a>
+            </div>
+        </div>
+
+        <div class="panel-destacado">
+            <h2>Servicios destacados</h2>
+
+            <ul>
+                <li>Automatización de correos</li>
+                <li>Clasificación de documentos</li>
+                <li>Chatbots empresariales</li>
+                <li>Dashboards de datos</li>
+                <li>Automatización administrativa</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="seccion" id="servicios">
+    <div class="contenedor">
+
+        <h2>Servicios</h2>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <h3>Automatización</h3>
+                <p>Automatizamos tareas repetitivas para ahorrar tiempo.</p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>IA aplicada</h3>
+                <p>Implementamos soluciones inteligentes adaptadas a empresas.</p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Documentación</h3>
+                <p>Organización y análisis automático de documentos.</p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Atención al cliente</h3>
+                <p>Chatbots y respuestas automáticas.</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="seccion alternativa" id="proceso">
+    <div class="contenedor">
+
+        <h2>Cómo trabajamos</h2>
+
+        <div class="pasos">
+
+            <div class="paso">
+                <span>1</span>
+                <h3>Análisis</h3>
+                <p>Estudiamos las necesidades de la empresa.</p>
+            </div>
+
+            <div class="paso">
+                <span>2</span>
+                <h3>Propuesta</h3>
+                <p>Diseñamos una solución personalizada.</p>
+            </div>
+
+            <div class="paso">
+                <span>3</span>
+                <h3>Desarrollo</h3>
+                <p>Implementamos la solución.</p>
+            </div>
+
+            <div class="paso">
+                <span>4</span>
+                <h3>Seguimiento</h3>
+                <p>Realizamos mejoras continuas.</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="seccion" id="demo">
+    <div class="contenedor demo-grid">
+
+        <div>
+            <h2>Vídeo demostración</h2>
+
+            <p>
+                Ejemplo de una solución desarrollada por JOCARSA para automatizar procesos empresariales.
+            </p>
+        </div>
+
+        <div class="video">
+            <video controls>
+                <source src="assets/video/demo.mp4" type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="seccion contacto" id="contacto">
+    <div class="contenedor contacto-grid">
+
+        <div>
+            <h2>Formulario de contacto</h2>
+
+            <p>
+                Cuéntanos qué necesita tu empresa y te responderemos lo antes posible.
+            </p>
+        </div>
+
+        <form class="formulario">
+
+            <label>
+                Nombre
+                <input type="text" required>
+            </label>
+
+            <label>
+                Empresa
+                <input type="text" required>
+            </label>
+
+            <label>
+                Email
+                <input type="email" required>
+            </label>
+
+            <label>
+                Servicio
+                <select required>
+                    <option value="">Selecciona una opción</option>
+                    <option>Automatización</option>
+                    <option>IA</option>
+                    <option>Chatbots</option>
+                    <option>Documentación</option>
+                </select>
+            </label>
+
+            <label>
+                Mensaje
+                <textarea rows="5" required></textarea>
+            </label>
+
+            <button type="submit" class="boton principal">
+                Enviar formulario
+            </button>
+
+        </form>
+
+    </div>
+</section>
+
+
+<footer class="pie">
+    <div class="contenedor">
+        <p>© 2026 JOCARSA - Soluciones digitales para empresas</p>
+    </div>
+</footer>
+
+
+<script>
+document.querySelector(".formulario").addEventListener("submit", function(e){
+    e.preventDefault();
+    alert("Formulario enviado correctamente.");
+});
+</script>
+
+</body>
+</html>
