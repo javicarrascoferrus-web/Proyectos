@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "nombre": "Balón de fútbol",
+        "precio": 29.99,
+        "descripcion": "Balón profesional para césped"
+    },
+    {
+        "id": 2,
+        "nombre": "Mancuernas",
+        "precio": 45.50,
+        "descripcion": "Set de entrenamiento"
+    },
+    {
+        "id": 3,
+        "nombre": "Raqueta tenis",
+        "precio": 89.99,
+        "descripcion": "Raqueta ligera profesional"
+    }
+]
