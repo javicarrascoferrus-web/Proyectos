@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        canvas{border:1px solid grey;}
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+
+    <script>
+        let lista = [30,50,60,80,40,30,20]
+
+        let lienzo = document.querySelector("canvas")
+        lienzo.width = 512
+        lienzo.height = 512
+
+        let contexto = lienzo.getContext("2d")
+
+        contexto.fillStyle = "red"
+        contexto.beginPath()
+        contexto.moveTo(256,256)
+        contexto.arc(256,256,200,0,Math.PI/6)
+        contexto.fill()
+    </script>
+</body>
+</html>
