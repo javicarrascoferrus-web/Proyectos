@@ -1,0 +1,32 @@
+.jocarsa-wysiwyg-contenedor{
+    border:1px solid lightgrey;
+    background:white;
+    margin-bottom:20px;
+    font-family:Arial,sans-serif;
+}
+
+.jocarsa-wysiwyg-textarea-oculto{
+    display:none;
+}
+
+.jocarsa-wysiwyg-barra{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    border-bottom:1px solid lightgrey;
+    background:rgb(248,248,248);
+}
+
+.jocarsa-wysiwyg-barra button,
+.jocarsa-wysiwyg-barra select{
+    padding:6px 10px;
+    border:1px solid lightgrey;
+    background:white;
+    cursor:pointer;
+}
+
+.jocarsa-wysiwyg-editor{
+    min-height:250px;
+    padding:20px;
+    outline:none;
+}
