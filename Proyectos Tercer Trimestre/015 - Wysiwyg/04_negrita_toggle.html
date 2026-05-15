@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        #contenedor{
+            width:400px;
+            height:300px;
+            border:1px solid lightgrey;
+            outline:none;
+            padding:20px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="negrita"><b>B</b></button>
+
+    <div id="contenedor" contenteditable></div>
+
+    <script>
+        let negrita = false
+        let boton_negrita = document.querySelector("#negrita")
+        let contenedor = document.querySelector("#contenedor")
+
+        boton_negrita.onclick = function(){
+            if(negrita){
+                contenedor.style.fontWeight = "normal"
+                negrita = false
+            }else{
+                contenedor.style.fontWeight = "bold"
+                negrita = true
+            }
+        }
+    </script>
+
+</body>
+</html>
