@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<header class="cabecera">
+  <h1>Correos: {{ categoria|capitalize }}</h1>
+  <p>Mostrando los últimos {{ cantidad }} correos analizados.</p>
+</header>
+
+<section class="lista">
+  {% if correos|length == 0 %}
+    <div class="vacio">No hay correos en esta categoría.</div>
+  {% endif %}
+
+  {% for correo in correos %}
+    <a class="tarjeta" href="/correo/{{ correo.id }}?cantidad={{ cantidad }}">
+      <div class="tarjeta-arriba">
+        <strong>{{ correo.remitente }}</strong>
+        <span class="prioridad">Prioridad {{ correo.prioridad }}/5</span>
+      </div>
+
+      <h2>{{ correo.asunto or "(Sin asunto)" }}</h2>
+      <p class="fecha">{{ correo.fecha }}</p>
+      <p>{{ correo.resumen }}</p>
+      <small>Acción recomendada: {{ correo.accion }}</small>
+    </a>
+  {% endfor %}
+</section>
+{% endblock %}
