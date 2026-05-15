@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dibujo básico</title>
+    <style>
+        body{margin:0;background:#f0f0f0;font-family:Arial,sans-serif;}
+        canvas{display:block;margin:20px auto;border:1px solid #999;background:white;}
+    </style>
+</head>
+<body>
+
+<canvas id="lienzo" width="800" height="500"></canvas>
+
+<script>
+    let canvas = document.getElementById("lienzo")
+    let contexto = canvas.getContext("2d")
+
+    let dibujando = false
+    let anteriorX = 0
+    let anteriorY = 0
+
+    canvas.addEventListener("mousedown", function(e){
+        dibujando = true
+        anteriorX = e.offsetX
+        anteriorY = e.offsetY
+    })
+
+    canvas.addEventListener("mousemove", function(e){
+        if(dibujando == false){return}
+
+        contexto.beginPath()
+        contexto.moveTo(anteriorX, anteriorY)
+        contexto.lineTo(e.offsetX, e.offsetY)
+        contexto.stroke()
+
+        anteriorX = e.offsetX
+        anteriorY = e.offsetY
+    })
+
+    canvas.addEventListener("mouseup", function(){
+        dibujando = false
+    })
+
+    canvas.addEventListener("mouseleave", function(){
+        dibujando = false
+    })
+</script>
+
+</body>
+</html>
