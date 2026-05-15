@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOCARSA - Servicios digitales</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="cabecera">
+    <div class="contenedor">
+        <h2>JOCARSA</h2>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#contacto">Contacto</a>
+            <a href="aviso-legal.html">Aviso legal</a>
+            <a href="privacidad.html">Privacidad</a>
+            <a href="cookies.html">Cookies</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="contenedor">
+        <h1>Soluciones digitales para pequeñas empresas</h1>
+        <p>
+            Ayudamos a empresas a mejorar sus procesos mediante automatización,
+            diseño web e inteligencia artificial aplicada.
+        </p>
+        <a href="#contacto" class="boton">Solicitar información</a>
+    </div>
+</section>
+
+<section id="servicios" class="seccion">
+    <div class="contenedor">
+        <h2>Servicios</h2>
+
+        <div class="tarjetas">
+            <article>
+                <h3>Automatización</h3>
+                <p>Digitalización de tareas repetitivas para ahorrar tiempo.</p>
+            </article>
+
+            <article>
+                <h3>Diseño web</h3>
+                <p>Creación de páginas web sencillas, modernas y adaptadas a móviles.</p>
+            </article>
+
+            <article>
+                <h3>Inteligencia artificial</h3>
+                <p>Asistentes, clasificación de información y apoyo a procesos internos.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="seccion alternativa">
+    <div class="contenedor">
+        <h2>Proceso de trabajo</h2>
+
+        <div class="pasos">
+            <div>
+                <span>1</span>
+                <h3>Análisis</h3>
+                <p>Se estudian las necesidades del cliente.</p>
+            </div>
+
+            <div>
+                <span>2</span>
+                <h3>Desarrollo</h3>
+                <p>Se crea una solución práctica y funcional.</p>
+            </div>
+
+            <div>
+                <span>3</span>
+                <h3>Entrega</h3>
+                <p>Se revisa el resultado final y se hacen ajustes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="seccion contacto">
+    <div class="contenedor contacto-grid">
+        <div>
+            <h2>Contacto</h2>
+            <p>Rellena el formulario para solicitar información.</p>
+        </div>
+
+        <form id="formulario">
+            <input type="text" placeholder="Nombre" required>
+            <input type="text" placeholder="Empresa" required>
+            <input type="email" placeholder="Email" required>
+
+            <select required>
+                <option value="">Servicio de interés</option>
+                <option>Automatización</option>
+                <option>Diseño web</option>
+                <option>Inteligencia artificial</option>
+            </select>
+
+            <textarea rows="5" placeholder="Mensaje" required></textarea>
+
+            <label class="legal-check">
+                <input type="checkbox" required>
+                Acepto la política de privacidad
+            </label>
+
+            <button class="boton" type="submit">Enviar</button>
+        </form>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>JOCARSA · Servicios digitales para empresas</p>
+</footer>
+
+<script>
+document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
+    alert("Formulario enviado correctamente.");
+});
+</script>
+
+</body>
+</html>
