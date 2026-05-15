@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor | Portfolio Maker IA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="editor-body">
+
+<aside class="panel-editor">
+    <a class="volver" href="index.html">← Volver</a>
+
+    <h1>Editor de proyecto</h1>
+    <p>Crea una vista previa de tu portfolio o página web.</p>
+
+    <label for="titulo">Título del proyecto</label>
+    <input id="titulo" type="text" placeholder="Ejemplo: Portfolio de Javier">
+
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" placeholder="Ejemplo: Portfolio personal con proyectos, habilidades y contacto"></textarea>
+
+    <label for="color">Color principal</label>
+    <select id="color">
+        <option value="#2563eb">Azul</option>
+        <option value="#16a34a">Verde</option>
+        <option value="#9333ea">Morado</option>
+        <option value="#dc2626">Rojo</option>
+        <option value="#ea580c">Naranja</option>
+    </select>
+
+    <button id="generar" class="boton">Generar vista previa</button>
+    <button id="guardar" class="boton secundario">Guardar proyecto</button>
+
+    <p id="mensaje" class="mensaje"></p>
+</aside>
+
+<main class="zona-preview">
+    <iframe id="preview"></iframe>
+</main>
+
+<script src="app.js"></script>
+<script>
+    const titulo = document.getElementById("titulo");
+    const descripcion = document.getElementById("descripcion");
+    const color = document.getElementById("color");
+    const preview = document.getElementById("preview");
+    const mensaje = document.getElementById("mensaje");
+    const botonGenerar = document.getElementById("generar");
+    const botonGuardar = document.getElementById("guardar");
+
+    const parametros = new URLSearchParams(window.location.search);
+    const id = parametros.get("id");
+
+    let proyectos = obtenerProyectos();
+
+    if (id !== null && proyectos[id]) {
+        titulo.value = proyectos[id].titulo;
+        descripcion.value = proyectos[id].descripcion;
+        color.value = proyectos[id].color || "#2563eb";
+        generarPreview();
+    }
+
+    function generarHTMLProyecto() {
+        const nombre = titulo.value.trim() || "Mi Portfolio";
+        const texto = descripcion.value.trim() || "Portfolio personal creado con HTML, CSS y JavaScript.";
+        const colorPrincipal = color.value;
+
+        return `
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>${nombre}</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    header {
+        background: ${colorPrincipal};
+        color: white;
+        padding: 60px 30px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 44px;
+        margin: 0 0 12px;
+    }
+
+    header p {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    main {
+        max-width: 900px;
+        margin: auto;
+        padding: 40px 24px;
+    }
+
+    section {
+        background: white;
+        padding: 28px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, .12);
+    }
+
+    h2 {
+        color: ${colorPrincipal};
+        margin-top: 0;
+    }
+
+    .skills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .skills span {
+        background: ${colorPrincipal};
+        color: white;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 14px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 25px;
+        color: #64748b;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>${nombre}</h1>
+    <p>${texto}</p>
+</header>
+
+<main>
+    <section>
+        <h2>Sobre mí</h2>
+        <p>
+            Soy una persona creativa, responsable y con interés en el desarrollo web.
+            Este portfolio muestra una presentación personal sencilla y profesional.
+        </p>
+    </section>
+
+    <section>
+        <h2>Habilidades</h2>
+        <div class="skills">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>Diseño web</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Proyectos</h2>
+        <p>
+            Aquí se pueden mostrar trabajos realizados, páginas web, prácticas de clase
+            o proyectos personales.
+        </p>
+    </section>
+
+    <section>
+        <h2>Contacto</h2>
+        <p>Email: contacto@ejemplo.com</p>
+    </section>
+</main>
+
+<footer>
+    Portfolio generado con Portfolio Maker IA
+</footer>
+
+</body>
+</html>
+        `;
+    }
+
+    function generarPreview() {
+        const html = generarHTMLProyecto();
+        const doc = preview.contentDocument || preview.contentWindow.document;
+
+        doc.open();
+        doc.write(html);
+        doc.close();
+    }
+
+    function guardarProyecto() {
+        const nombre = titulo.value.trim();
+        const texto = descripcion.value.trim();
+
+        if (nombre === "" || texto === "") {
+            mensaje.textContent = "Completa el título y la descripción.";
+            return;
+        }
+
+        const proyecto = {
+            titulo: nombre,
+            descripcion: texto,
+            color: color.value,
+            fecha: new Date().toLocaleString()
+        };
+
+        if (id !== null && proyectos[id]) {
+            proyectos[id] = proyecto;
+        } else {
+            proyectos.push(proyecto);
+        }
+
+        guardarProyectos(proyectos);
+
+        mensaje.textContent = "Proyecto guardado correctamente.";
+    }
+
+    botonGenerar.addEventListener("click", generarPreview);
+    botonGuardar.addEventListener("click", guardarProyecto);
+</script>
+
+</body>
+</html>
