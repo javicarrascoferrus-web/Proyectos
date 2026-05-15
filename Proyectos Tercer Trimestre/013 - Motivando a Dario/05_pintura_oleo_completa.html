@@ -1,0 +1,329 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pintura óleo completa</title>
+    <style>
+        body{
+            margin:0;
+            padding:20px;
+            background:#f0f0f0;
+            font-family:Arial,sans-serif;
+        }
+
+        .controls{
+            width:980px;
+            margin:0 auto 20px auto;
+            padding:15px;
+            background:white;
+            border:1px solid #ccc;
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+            align-items:center;
+        }
+
+        canvas{
+            display:block;
+            margin:0 auto;
+            border:1px solid #999;
+            background:white;
+            cursor:crosshair;
+        }
+
+        label{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        button{
+            padding:8px 14px;
+            border:1px solid #999;
+            background:white;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <label>
+        Color:
+        <input type="color" id="color" value="#cc5500">
+    </label>
+
+    <label>
+        Grosor:
+        <input type="range" id="width" min="1" max="80" value="24">
+        <span id="widthValue">24</span>
+    </label>
+
+    <label>
+        Óleo:
+        <input type="checkbox" id="oleo" checked>
+    </label>
+
+    <label>
+        Arrastre:
+        <input type="range" id="drag" min="0" max="1" step="0.01" value="0.55">
+        <span id="dragValue">0.55</span>
+    </label>
+
+    <label>
+        Contaminación:
+        <input type="range" id="contaminacion" min="0" max="1" step="0.01" value="0.18">
+        <span id="contaminacionValue">0.18</span>
+    </label>
+
+    <label>
+        Duración pincel:
+        <input type="range" id="duracion" min="20" max="600" step="1" value="220">
+        <span id="duracionValue">220</span>
+    </label>
+
+    <button id="limpiar">Limpiar</button>
+</div>
+
+<canvas id="lienzo" width="980" height="560"></canvas>
+
+<script>
+    let canvas = document.getElementById("lienzo")
+    let contexto = canvas.getContext("2d", { willReadFrequently:true })
+
+    let colorInput = document.getElementById("color")
+    let widthInput = document.getElementById("width")
+    let widthValue = document.getElementById("widthValue")
+    let oleoInput = document.getElementById("oleo")
+    let dragInput = document.getElementById("drag")
+    let dragValue = document.getElementById("dragValue")
+    let contaminacionInput = document.getElementById("contaminacion")
+    let contaminacionValue = document.getElementById("contaminacionValue")
+    let duracionInput = document.getElementById("duracion")
+    let duracionValue = document.getElementById("duracionValue")
+    let limpiarBtn = document.getElementById("limpiar")
+
+    let dibujando = false
+    let anteriorX = 0
+    let anteriorY = 0
+    let distanciaTrazo = 0
+
+    let pincel = {r:204,g:85,b:0,a:1}
+
+    widthInput.addEventListener("input", function(){
+        widthValue.textContent = widthInput.value
+    })
+
+    dragInput.addEventListener("input", function(){
+        dragValue.textContent = dragInput.value
+    })
+
+    contaminacionInput.addEventListener("input", function(){
+        contaminacionValue.textContent = contaminacionInput.value
+    })
+
+    duracionInput.addEventListener("input", function(){
+        duracionValue.textContent = duracionInput.value
+    })
+
+    limpiarBtn.addEventListener("click", function(){
+        contexto.clearRect(0,0,canvas.width,canvas.height)
+    })
+
+    function hexARgba(hex){
+        hex = hex.replace("#","")
+        return {
+            r:parseInt(hex.substring(0,2),16),
+            g:parseInt(hex.substring(2,4),16),
+            b:parseInt(hex.substring(4,6),16),
+            a:1
+        }
+    }
+
+    function mezclarColor(c1, c2, t){
+        return {
+            r:c1.r*(1-t) + c2.r*t,
+            g:c1.g*(1-t) + c2.g*t,
+            b:c1.b*(1-t) + c2.b*t,
+            a:c1.a*(1-t) + c2.a*t
+        }
+    }
+
+    function colorCss(c){
+        return "rgba(" +
+            Math.round(c.r) + "," +
+            Math.round(c.g) + "," +
+            Math.round(c.b) + "," +
+            c.a + ")"
+    }
+
+    function colorPixel(x,y){
+        if(x < 0 || y < 0 || x >= canvas.width || y >= canvas.height){
+            return {r:255,g:255,b:255,a:0}
+        }
+
+        let data = contexto.getImageData(Math.floor(x), Math.floor(y), 1, 1).data
+
+        return {
+            r:data[0],
+            g:data[1],
+            b:data[2],
+            a:data[3]/255
+        }
+    }
+
+    function estamparElipse(x,y,radioX,radioY,angulo,color,alpha){
+        contexto.save()
+
+        contexto.translate(x,y)
+        contexto.rotate(angulo)
+        contexto.scale(radioX, radioY)
+
+        contexto.globalAlpha = alpha
+
+        let grad = contexto.createRadialGradient(0,0,0,0,0,1)
+
+        grad.addColorStop(0, colorCss(color))
+        grad.addColorStop(0.65, colorCss({...color, a:color.a*0.7}))
+        grad.addColorStop(1, "rgba(0,0,0,0)")
+
+        contexto.fillStyle = grad
+        contexto.beginPath()
+        contexto.arc(0,0,1,0,Math.PI*2)
+        contexto.fill()
+
+        contexto.restore()
+    }
+
+    function pintarSegmentoOleo(x1,y1,x2,y2){
+        let dx = x2 - x1
+        let dy = y2 - y1
+        let distancia = Math.hypot(dx,dy)
+
+        if(distancia === 0){return}
+
+        let pasos = Math.max(1, Math.ceil(distancia / 1.5))
+        let grosorBase = parseFloat(widthInput.value)
+        let arrastre = parseFloat(dragInput.value)
+        let contaminacion = parseFloat(contaminacionInput.value)
+        let duracion = parseFloat(duracionInput.value)
+        let colorUsuario = hexARgba(colorInput.value)
+        let angulo = Math.atan2(dy,dx)
+
+        for(let i=0;i<=pasos;i++){
+            let t = i / pasos
+            let x = x1 + dx * t
+            let y = y1 + dy * t
+
+            distanciaTrazo += distancia / pasos
+
+            let progreso = Math.min(1, distanciaTrazo / duracion)
+            let grosorActual = Math.max(1, grosorBase * (1 - progreso))
+            let opacidadActual = Math.max(0.04, 1 - progreso)
+
+            let radioMayor = Math.max(1, grosorActual * 0.55)
+            let radioMenor = Math.max(0.8, grosorActual * 0.22)
+
+            let normalX = -Math.sin(angulo)
+            let normalY = Math.cos(angulo)
+
+            let muestras = Math.max(3, Math.floor(grosorActual * 0.9))
+
+            for(let j=0;j<muestras;j++){
+                let franja = muestras === 1 ? 0 : (j/(muestras-1))*2 - 1
+                let desplazamiento = franja * radioMayor * 0.7
+
+                let px = x + normalX * desplazamiento
+                let py = y + normalY * desplazamiento
+
+                let debajo = colorPixel(px,py)
+
+                if(debajo.a > 0.01){
+                    pincel = mezclarColor(pincel, debajo, contaminacion)
+                }
+
+                pincel = mezclarColor(pincel, colorUsuario, 0.008)
+
+                let radioX = Math.max(0.8, radioMayor * (0.95 - Math.abs(franja)*0.15))
+                let radioY = Math.max(0.5, radioMenor * (0.9 - Math.abs(franja)*0.1))
+
+                if(debajo.a > 0.01){
+                    let arrastreColor = mezclarColor(debajo, pincel, arrastre)
+
+                    estamparElipse(
+                        px + dx * 0.10,
+                        py + dy * 0.10,
+                        radioX * 1.05,
+                        radioY * 1.05,
+                        angulo,
+                        arrastreColor,
+                        opacidadActual * 0.45
+                    )
+                }
+
+                let colorFinal = mezclarColor(pincel, debajo, 0.12)
+
+                estamparElipse(
+                    px,
+                    py,
+                    radioX,
+                    radioY,
+                    angulo,
+                    colorFinal,
+                    opacidadActual
+                )
+            }
+        }
+    }
+
+    function pintarSegmentoNormal(x1,y1,x2,y2){
+        contexto.save()
+
+        contexto.strokeStyle = colorInput.value
+        contexto.lineWidth = parseFloat(widthInput.value)
+        contexto.lineCap = "round"
+        contexto.lineJoin = "round"
+        contexto.globalAlpha = 1
+
+        contexto.beginPath()
+        contexto.moveTo(x1,y1)
+        contexto.lineTo(x2,y2)
+        contexto.stroke()
+
+        contexto.restore()
+    }
+
+    canvas.addEventListener("mousedown", function(e){
+        dibujando = true
+        anteriorX = e.offsetX
+        anteriorY = e.offsetY
+        distanciaTrazo = 0
+        pincel = hexARgba(colorInput.value)
+    })
+
+    canvas.addEventListener("mousemove", function(e){
+        if(dibujando == false){return}
+
+        let x = e.offsetX
+        let y = e.offsetY
+
+        if(oleoInput.checked){
+            pintarSegmentoOleo(anteriorX, anteriorY, x, y)
+        }else{
+            pintarSegmentoNormal(anteriorX, anteriorY, x, y)
+        }
+
+        anteriorX = x
+        anteriorY = y
+    })
+
+    function terminarTrazo(){
+        dibujando = false
+    }
+
+    canvas.addEventListener("mouseup", terminarTrazo)
+    canvas.addEventListener("mouseleave", terminarTrazo)
+</script>
+
+</body>
+</html>
