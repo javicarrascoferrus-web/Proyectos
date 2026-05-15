@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado del test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="header">
+            <h1>Resultado del test</h1>
+            <p>Resumen de tu prueba de nivel de inglés.</p>
+        </div>
+
+        <div class="resultado-box">
+            <h2>{{ intento.nombre }}</h2>
+
+            <div class="badges">
+                <span>Puntuación: {{ intento.puntos }} / {{ intento.total_preguntas }}</span>
+                <span>Nivel estimado: {{ intento.nivel }}</span>
+            </div>
+
+            <p><strong>Email:</strong> {{ intento.email }}</p>
+            <p><strong>Teléfono:</strong> {{ intento.telefono }}</p>
+            <p><strong>Curso interesado:</strong> {{ intento.curso }}</p>
+            <p><strong>Fecha:</strong> {{ intento.fecha }}</p>
+        </div>
+
+        <h2 class="titulo-seccion">Detalle de respuestas</h2>
+
+        <div class="detalle-respuestas">
+            {% for respuesta in respuestas %}
+                <div class="respuesta-card {% if respuesta.correcta == 1 %}correcta{% else %}incorrecta{% endif %}">
+                    <h3>{{ respuesta.numero_pregunta }}. {{ respuesta.pregunta }}</h3>
+
+                    <p>
+                        <strong>Tu respuesta:</strong>
+                        {{ respuesta.respuesta_usuario if respuesta.respuesta_usuario else "Sin respuesta" }}
+                    </p>
+
+                    <p>
+                        <strong>Respuesta correcta:</strong>
+                        {{ respuesta.respuesta_correcta }}
+                    </p>
+
+                    <p>
+                        <strong>Resultado:</strong>
+                        {% if respuesta.correcta == 1 %}
+                            Correcta
+                        {% else %}
+                            Incorrecta
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="acciones">
+            <a href="{{ url_for('cuestionario') }}" class="btn-secundario">Hacer otro test</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
