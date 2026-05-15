@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bandeja de entrada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+
+    <div class="sidebar">
+        <h2>Correo</h2>
+
+        <a href="/nuevo">Nuevo correo</a>
+        <a href="/actualizar">Actualizar</a>
+        <a href="/logout">Cerrar sesión</a>
+    </div>
+
+
+    <div class="lista-correos">
+        <h2>Bandeja de entrada</h2>
+
+       {% if mensajes %}
+    {% for mensaje in mensajes %}
+        <div class="correo-item">
+            <a href="/mensaje/{{ mensaje.id }}">
+                <h3>{{ mensaje.subject }}</h3>
+                <p><strong>De:</strong> {{ mensaje.from }}</p>
+                <small>{{ mensaje.date }}</small>
+            </a>
+        </div>
+    {% endfor %}
+{% endif %}
+    </div>
+
+
+    <div class="contenido-correo">
+
+        {% if mensaje_actual %}
+            <h2>{{ mensaje_actual.subject }}</h2>
+
+            <p>
+                <strong>De:</strong> {{ mensaje_actual.from }}
+            </p>
+
+            <p>
+                <strong>Fecha:</strong> {{ mensaje_actual.date }}
+            </p>
+
+            <hr>
+
+            <div class="mensaje-body">
+                {{ mensaje_actual.body }}
+            </div>
+
+        {% else %}
+            <h2>Selecciona un correo</h2>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
