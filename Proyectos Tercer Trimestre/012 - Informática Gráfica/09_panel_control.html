@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Panel de control con gráficos circulares</title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+				box-sizing:border-box;
+			}
+			body{
+				font-family:Arial,sans-serif;
+				background:#eef2f7;
+				color:#1f2937;
+				padding:30px;
+			}
+			.panel{
+				max-width:1600px;
+				margin:auto;
+			}
+			.cabecera{
+				margin-bottom:25px;
+			}
+			.cabecera h1{
+				font-size:32px;
+				margin-bottom:8px;
+			}
+			.cabecera p{
+				color:#6b7280;
+				font-size:15px;
+			}
+			.resumen{
+				display:grid;
+				grid-template-columns:repeat(4,1fr);
+				gap:20px;
+				margin-bottom:25px;
+			}
+			.tarjeta-resumen{
+				background:white;
+				border:1px solid #dbe3ec;
+				border-radius:14px;
+				padding:18px;
+				box-shadow:0 4px 12px rgba(0,0,0,0.05);
+			}
+			.tarjeta-resumen h3{
+				font-size:14px;
+				color:#6b7280;
+				margin-bottom:10px;
+				font-weight:normal;
+			}
+			.tarjeta-resumen .valor{
+				font-size:32px;
+				font-weight:bold;
+				margin-bottom:6px;
+			}
+			.tarjeta-resumen .detalle{
+				font-size:13px;
+				color:#6b7280;
+			}
+			.galeria{
+				display:grid;
+				grid-template-columns:repeat(2,1fr);
+				gap:24px;
+			}
+			.grafica{
+				background:white;
+				border:1px solid #dbe3ec;
+				border-radius:16px;
+				padding:20px;
+				box-shadow:0 4px 12px rgba(0,0,0,0.05);
+			}
+			.grafica .titulo{
+				font-size:20px;
+				font-weight:bold;
+				margin-bottom:6px;
+			}
+			.grafica .subtitulo{
+				font-size:14px;
+				color:#6b7280;
+				margin-bottom:16px;
+			}
+			.grafica canvas{
+				display:block;
+				width:100%;
+				height:auto;
+				background:white;
+			}
+			@media (max-width:1200px){
+				.galeria{
+					grid-template-columns:1fr;
+				}
+				.resumen{
+					grid-template-columns:repeat(2,1fr);
+				}
+			}
+			@media (max-width:700px){
+				.resumen{
+					grid-template-columns:1fr;
+				}
+				body{
+					padding:15px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="panel">
+			<div class="cabecera">
+				<h1>Panel de control</h1>
+				<p>Ejemplo de dashboard construido con múltiples gráficos circulares reutilizables</p>
+			</div>
+
+			<div class="resumen">
+				<div class="tarjeta-resumen">
+					<h3>Ventas del mes</h3>
+					<div class="valor">128.450 €</div>
+					<div class="detalle">+12,6% respecto al mes anterior</div>
+				</div>
+				<div class="tarjeta-resumen">
+					<h3>Pedidos</h3>
+					<div class="valor">2.381</div>
+					<div class="detalle">Promedio diario: 79,3</div>
+				</div>
+				<div class="tarjeta-resumen">
+					<h3>Clientes activos</h3>
+					<div class="valor">864</div>
+					<div class="detalle">74 nuevos esta semana</div>
+				</div>
+				<div class="tarjeta-resumen">
+					<h3>Incidencias abiertas</h3>
+					<div class="valor">19</div>
+					<div class="detalle">Resolución media: 1,4 días</div>
+				</div>
+			</div>
+
+			<div class="galeria">
+
+				<div class="grafica" data-datos='[
+					{"nombre":"Completados","valor":720},
+					{"nombre":"En progreso","valor":180},
+					{"nombre":"Pendientes","valor":95},
+					{"nombre":"Bloqueados","valor":35}
+				]'>
+					<div class="titulo">Estado de tareas</div>
+					<div class="subtitulo">Distribución general del flujo de trabajo</div>
+				</div>
+
+				<div class="grafica" data-datos='[
+					{"nombre":"Web","valor":420},
+					{"nombre":"Tienda","valor":290},
+					{"nombre":"Marketplace","valor":210},
+					{"nombre":"Distribuidores","valor":95}
+				]'>
+					<div class="titulo">Ventas por canal</div>
+					<div class="subtitulo">Origen de las operaciones registradas</div>
+				</div>
+
+				<div class="grafica" data-datos='[
+					{"nombre":"España","valor":530},
+					{"nombre":"Portugal","valor":120},
+					{"nombre":"Francia","valor":90},
+					{"nombre":"Italia","valor":65},
+					{"nombre":"Otros","valor":40}
+				]'>
+					<div class="titulo">Clientes por país</div>
+					<div class="subtitulo">Mercados activos durante el trimestre</div>
+				</div>
+
+				<div class="grafica" data-datos='[
+					{"nombre":"CPU","valor":62},
+					{"nombre":"RAM","valor":23},
+					{"nombre":"Disco","valor":10},
+					{"nombre":"Libre","valor":5}
+				]'>
+					<div class="titulo">Uso de infraestructura</div>
+					<div class="subtitulo">Consumo relativo de recursos del sistema</div>
+				</div>
+
+				<div class="grafica" data-datos='[
+					{"nombre":"Alta prioridad","valor":26},
+					{"nombre":"Media prioridad","valor":54},
+					{"nombre":"Baja prioridad","valor":31}
+				]'>
+					<div class="titulo">Incidencias por prioridad</div>
+					<div class="subtitulo">Clasificación de tickets abiertos</div>
+				</div>
+
+				<div class="grafica" data-datos='[
+					{"nombre":"Satisfechos","valor":640},
+					{"nombre":"Neutros","valor":120},
+					{"nombre":"Insatisfechos","valor":38}
+				]'>
+					<div class="titulo">Satisfacción del cliente</div>
+					<div class="subtitulo">Encuestas respondidas este mes</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script>
+			class GraficaCircular {
+				constructor(contenedor, datos){
+					this.contenedor = contenedor
+					this.datos = datos
+					this.ancho = 1200
+					this.alto = 620
+
+					this.lienzo = document.createElement("canvas")
+					this.lienzo.width = this.ancho
+					this.lienzo.height = this.alto
+
+					this.contexto = this.lienzo.getContext("2d")
+					this.centroX = this.lienzo.width / 2
+					this.centroY = this.lienzo.height / 2 + 10
+					this.radio = 170
+				}
+
+				insertarCanvas(){
+					this.contenedor.appendChild(this.lienzo)
+				}
+
+				dibujar(){
+					let contexto = this.contexto
+					let datos = this.datos
+					let centroX = this.centroX
+					let centroY = this.centroY
+					let radio = this.radio
+
+					contexto.clearRect(0,0,this.lienzo.width,this.lienzo.height)
+
+					let total = 0
+					for(let i = 0; i < datos.length; i++){
+						total += Number(datos[i].valor)
+					}
+
+					let anguloInicio = 0
+					let etiquetasDerecha = []
+					let etiquetasIzquierda = []
+
+					for(let i = 0; i < datos.length; i++){
+						let proporcion = datos[i].valor / total
+						let anguloFinal = anguloInicio + proporcion * Math.PI * 2
+						let color = `hsl(${(i * 67) % 360},75%,55%)`
+
+						contexto.fillStyle = color
+						contexto.beginPath()
+						contexto.moveTo(centroX, centroY)
+						contexto.arc(centroX, centroY, radio, anguloInicio, anguloFinal)
+						contexto.closePath()
+						contexto.fill()
+
+						let anguloMedio = (anguloInicio + anguloFinal) / 2
+						let xBorde = centroX + Math.cos(anguloMedio) * radio
+						let yBorde = centroY + Math.sin(anguloMedio) * radio
+
+						let xFuera = centroX + Math.cos(anguloMedio) * (radio + 30)
+						let yFuera = centroY + Math.sin(anguloMedio) * (radio + 30)
+
+						let porcentaje = ((datos[i].valor / total) * 100).toFixed(1) + "%"
+						let texto = datos[i].nombre + " - " + datos[i].valor + " (" + porcentaje + ")"
+
+						let etiqueta = {
+							texto:texto,
+							color:color,
+							xBorde:xBorde,
+							yBorde:yBorde,
+							xFuera:xFuera,
+							yFuera:yFuera,
+							lado:xFuera >= centroX ? "derecha" : "izquierda"
+						}
+
+						if(etiqueta.lado === "derecha"){
+							etiquetasDerecha.push(etiqueta)
+						}else{
+							etiquetasIzquierda.push(etiqueta)
+						}
+
+						anguloInicio = anguloFinal
+					}
+
+					this.dibujarCentro(total)
+					this.repartirEtiquetas(etiquetasDerecha,"derecha")
+					this.repartirEtiquetas(etiquetasIzquierda,"izquierda")
+				}
+
+				dibujarCentro(total){
+					let contexto = this.contexto
+
+					contexto.fillStyle = "white"
+					contexto.beginPath()
+					contexto.arc(this.centroX, this.centroY, 75, 0, Math.PI * 2)
+					contexto.fill()
+
+					contexto.strokeStyle = "#d1d9e2"
+					contexto.lineWidth = 2
+					contexto.stroke()
+
+					contexto.textAlign = "center"
+					contexto.textBaseline = "middle"
+
+					contexto.fillStyle = "#6b7280"
+					contexto.font = "16px Arial"
+					contexto.fillText("TOTAL", this.centroX, this.centroY - 18)
+
+					contexto.fillStyle = "#111827"
+					contexto.font = "bold 30px Arial"
+					contexto.fillText(total, this.centroX, this.centroY + 12)
+				}
+
+				repartirEtiquetas(lista, lado){
+					let contexto = this.contexto
+					let centroX = this.centroX
+					let radio = this.radio
+
+					lista.sort((a,b) => a.yFuera - b.yFuera)
+
+					let separacionMinima = 24
+					let margenSuperior = 50
+					let margenInferior = this.lienzo.height - 40
+
+					if(lista.length > 0){
+						if(lista[0].yFuera < margenSuperior){
+							lista[0].yFuera = margenSuperior
+						}
+
+						for(let i = 1; i < lista.length; i++){
+							if(lista[i].yFuera < lista[i - 1].yFuera + separacionMinima){
+								lista[i].yFuera = lista[i - 1].yFuera + separacionMinima
+							}
+						}
+
+						if(lista[lista.length - 1].yFuera > margenInferior){
+							lista[lista.length - 1].yFuera = margenInferior
+
+							for(let i = lista.length - 2; i >= 0; i--){
+								if(lista[i].yFuera > lista[i + 1].yFuera - separacionMinima){
+									lista[i].yFuera = lista[i + 1].yFuera - separacionMinima
+								}
+							}
+						}
+					}
+
+					contexto.font = "14px Arial"
+					contexto.textBaseline = "middle"
+
+					for(let i = 0; i < lista.length; i++){
+						let e = lista[i]
+						let anchoTexto = contexto.measureText(e.texto).width
+						let tamCuadrado = 14
+						let separacionCuadradoTexto = 8
+
+						let xLineaFinal
+						let xCuadrado
+						let xTexto
+
+						if(lado === "derecha"){
+							xCuadrado = centroX + radio + 145
+							xTexto = xCuadrado + tamCuadrado + separacionCuadradoTexto
+							xLineaFinal = xCuadrado - 12
+						}else{
+							xTexto = centroX - radio - 145 - anchoTexto - tamCuadrado - separacionCuadradoTexto
+							xCuadrado = xTexto + anchoTexto + separacionCuadradoTexto
+							xLineaFinal = xCuadrado + tamCuadrado + 12
+						}
+
+						contexto.strokeStyle = e.color
+						contexto.lineWidth = 1.5
+						contexto.beginPath()
+						contexto.moveTo(e.xBorde, e.yBorde)
+						contexto.lineTo(e.xFuera, e.yFuera)
+						contexto.lineTo(xLineaFinal, e.yFuera)
+						contexto.stroke()
+
+						contexto.fillStyle = e.color
+						contexto.fillRect(xCuadrado, e.yFuera - tamCuadrado / 2, tamCuadrado, tamCuadrado)
+
+						contexto.fillStyle = "#111827"
+						contexto.textAlign = "left"
+						contexto.fillText(e.texto, xTexto, e.yFuera)
+					}
+				}
+			}
+
+			function iniciarGraficas(){
+				let graficas = document.querySelectorAll(".grafica")
+
+				graficas.forEach(function(div){
+					let textoJSON = div.getAttribute("data-datos")
+					if(!textoJSON){ return }
+
+					try{
+						let datos = JSON.parse(textoJSON)
+						let grafica = new GraficaCircular(div, datos)
+						grafica.insertarCanvas()
+						grafica.dibujar()
+					}catch(error){
+						let errorDiv = document.createElement("p")
+						errorDiv.style.color = "red"
+						errorDiv.textContent = "JSON no válido"
+						div.appendChild(errorDiv)
+						console.error(error)
+					}
+				})
+			}
+
+			document.addEventListener("DOMContentLoaded", iniciarGraficas)
+		</script>
+	</body>
+</html>
