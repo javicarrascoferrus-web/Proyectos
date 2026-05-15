@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema Inteligente de Comunicaciones</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <aside class="menu">
+        <h2>SIC</h2>
+        <p>Sistema Inteligente de Comunicaciones</p>
+
+        <nav>
+            <a href="/?categoria=urgente&cantidad={{ cantidad }}">
+                Correos urgentes
+            </a>
+
+            <a href="/?categoria=pendiente&cantidad={{ cantidad }}">
+                Pendientes
+            </a>
+
+            <a href="/?categoria=informativo&cantidad={{ cantidad }}">
+                Informativos
+            </a>
+
+            <a href="/?categoria=publicidad&cantidad={{ cantidad }}">
+                Publicidad
+            </a>
+        </nav>
+
+        <form action="/" method="get">
+            <input
+                type="hidden"
+                name="categoria"
+                value="{{ categoria|default('urgente') }}"
+            >
+
+            <input
+                type="number"
+                name="cantidad"
+                min="1"
+                max="100"
+                value="{{ cantidad }}"
+            >
+
+            <button type="submit">
+                Actualizar correos
+            </button>
+        </form>
+
+        <a class="limpiar" href="/actualizar">
+            Vaciar caché
+        </a>
+    </aside>
+
+    <main class="contenido">
+        {% block contenido %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>
