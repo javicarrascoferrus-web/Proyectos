@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login correo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-container">
+    <div class="login-box">
+        <h1>Cliente de correo</h1>
+        <p>Inicia sesión con tu cuenta</p>
+
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+
+            <label>Servidor IMAP</label>
+            <input type="text" name="imap_server" placeholder="imap.gmail.com" required>
+
+            <label>Servidor SMTP</label>
+            <input type="text" name="smtp_server" placeholder="smtp.gmail.com" required>
+
+            <button type="submit">
+                Iniciar sesión
+            </button>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
