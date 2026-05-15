@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del intento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="header">
+            <h1>Detalle del intento #{{ intento.id }}</h1>
+            <p>Información completa del usuario y sus respuestas</p>
+        </div>
+
+        <div class="datos-usuario">
+            <h2>Datos del alumno</h2>
+
+            <p><strong>Nombre:</strong> {{ intento.nombre }}</p>
+            <p><strong>Email:</strong> {{ intento.email }}</p>
+            <p><strong>Teléfono:</strong> {{ intento.telefono }}</p>
+            <p><strong>Curso:</strong> {{ intento.curso }}</p>
+            <p><strong>Puntos:</strong> {{ intento.puntos }}</p>
+            <p><strong>Nivel:</strong> {{ intento.nivel }}</p>
+            <p><strong>Fecha:</strong> {{ intento.fecha }}</p>
+        </div>
+
+        <div class="detalle-respuestas">
+            <h2>Respuestas del test</h2>
+
+            {% for respuesta in respuestas %}
+                <div class="respuesta-card {% if respuesta.correcta == 1 %}correcta{% else %}incorrecta{% endif %}">
+                    
+                    <h3>
+                        Pregunta {{ respuesta.numero_pregunta }}
+                    </h3>
+
+                    <p>
+                        <strong>Pregunta:</strong>
+                        {{ respuesta.pregunta }}
+                    </p>
+
+                    <p>
+                        <strong>Respuesta del usuario:</strong>
+                        {{ respuesta.respuesta_usuario }}
+                    </p>
+
+                    <p>
+                        <strong>Respuesta correcta:</strong>
+                        {{ respuesta.respuesta_correcta }}
+                    </p>
+
+                    <p>
+                        <strong>Resultado:</strong>
+                        {% if respuesta.correcta == 1 %}
+                            Correcta
+                        {% else %}
+                            Incorrecta
+                        {% endif %}
+                    </p>
+
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="acciones">
+            <a href="{{ url_for('admin_panel') }}" class="btn-secundario">
+                Volver al panel
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
