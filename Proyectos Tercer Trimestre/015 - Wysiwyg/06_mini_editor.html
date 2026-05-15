@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Mini editor</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    padding:20px;
+    background:rgb(245,245,245);
+}
+
+#barra{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    padding:10px;
+    background:white;
+    border:1px solid lightgrey;
+    margin-bottom:10px;
+}
+
+button,select{
+    padding:6px 10px;
+    border:1px solid lightgrey;
+    background:white;
+    cursor:pointer;
+}
+
+#contenedor{
+    width:700px;
+    height:400px;
+    border:1px solid lightgrey;
+    background:white;
+    padding:20px;
+    outline:none;
+    overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="barra">
+    <select id="heading">
+        <option value="p">Normal</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+    </select>
+
+    <button id="bold"><b>B</b></button>
+    <button id="italic"><i>I</i></button>
+</div>
+
+<div id="contenedor" contenteditable="true"></div>
+
+<script>
+let contenedor = document.querySelector("#contenedor")
+let ultimoRango = null
+
+function guardarRango(){
+    let sel = window.getSelection()
+
+    if(sel.rangeCount > 0){
+        ultimoRango = sel.getRangeAt(0).cloneRange()
+    }
+}
+
+function restaurarRango(){
+    if(ultimoRango){
+        let sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(ultimoRango)
+    }
+}
+
+function envolverSeleccion(tag, estilos={}){
+    restaurarRango()
+
+    let sel = window.getSelection()
+
+    if(sel.rangeCount === 0) return
+
+    let rango = sel.getRangeAt(0)
+
+    if(!contenedor.contains(rango.commonAncestorContainer)) return
+
+    let nodo = document.createElement(tag)
+
+    for(let propiedad in estilos){
+        nodo.style[propiedad] = estilos[propiedad]
+    }
+
+    let contenido = rango.extractContents()
+    nodo.appendChild(contenido)
+    rango.insertNode(nodo)
+
+    guardarRango()
+}
+
+document.querySelector("#bold").onclick = function(){
+    envolverSeleccion("span",{fontWeight:"bold"})
+}
+
+document.querySelector("#italic").onclick = function(){
+    envolverSeleccion("span",{fontStyle:"italic"})
+}
+
+document.querySelector("#heading").onchange = function(){
+    let valor = this.value
+
+    if(valor === "p") return
+
+    envolverSeleccion(valor)
+}
+
+contenedor.addEventListener("mouseup",guardarRango)
+contenedor.addEventListener("keyup",guardarRango)
+</script>
+
+</body>
+</html>
