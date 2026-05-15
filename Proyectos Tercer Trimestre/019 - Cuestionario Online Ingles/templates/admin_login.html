@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso administración</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-admin">
+    <div class="login-card">
+
+        <h1>Panel de administración</h1>
+        <p>Accede para consultar los intentos realizados.</p>
+
+        {% if error %}
+            <div class="alerta-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario" required>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-principal">
+                Entrar
+            </button>
+        </form>
+
+        <div class="admin-link">
+            <a href="{{ url_for('cuestionario') }}">Volver al test</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
