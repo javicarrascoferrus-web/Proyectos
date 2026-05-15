@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto WYSIWYG</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+            font-size: 40px;
+        }
+
+        header p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 22px;
+        }
+
+        .intro {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 28px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 24px rgba(15,23,42,.08);
+        }
+
+        .intro h2 {
+            margin-top: 0;
+        }
+
+        .intro p {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            display: block;
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: #111827;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 24px rgba(15,23,42,.08);
+            transition: .2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(15,23,42,.12);
+        }
+
+        .card span {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+        }
+
+        .card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .final {
+            border: 2px solid #2563eb;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Proyecto WYSIWYG</h1>
+    <p>Editor visual de texto creado con HTML, CSS y JavaScript</p>
+    <p>-</p>
+    <p>Javier Carrasco</p>
+</header>
+
+<main>
+    <section class="intro">
+        <h2>Descripción del proyecto</h2>
+        <p>
+            Este proyecto muestra la evolución de un editor de texto visual en el navegador.
+            Empieza usando un elemento editable con contenteditable y termina creando una
+            pequeña librería reutilizable capaz de convertir textareas en editores visuales.
+        </p>
+    </section>
+
+    <section class="grid">
+        <a class="card" href="01_contenteditable.html">
+            <span>Paso 1</span>
+            <h3>Contenteditable</h3>
+            <p>Primer contenedor editable directamente desde el navegador.</p>
+        </a>
+
+        <a class="card" href="02_boton_negrita.html">
+            <span>Paso 2</span>
+            <h3>Botón de negrita</h3>
+            <p>Se añade una barra sencilla con un botón de formato.</p>
+        </a>
+
+        <a class="card" href="03_negrita_simple.html">
+            <span>Paso 3</span>
+            <h3>Negrita simple</h3>
+            <p>El botón aplica negrita al contenedor completo.</p>
+        </a>
+
+        <a class="card" href="04_negrita_toggle.html">
+            <span>Paso 4</span>
+            <h3>Activar/desactivar negrita</h3>
+            <p>Se permite alternar entre texto normal y texto en negrita.</p>
+        </a>
+
+        <a class="card" href="05_editor_basico.html">
+            <span>Paso 5</span>
+            <h3>Editor básico</h3>
+            <p>Aplica negrita sobre una selección concreta de texto.</p>
+        </a>
+
+        <a class="card" href="06_mini_editor.html">
+            <span>Paso 6</span>
+            <h3>Mini editor</h3>
+            <p>Añade títulos, negrita y cursiva.</p>
+        </a>
+
+        <a class="card final" href="demo.html">
+            <span>Final</span>
+            <h3>Librería WYSIWYG</h3>
+            <p>Convierte un textarea en un editor visual reutilizable.</p>
+        </a>
+    </section>
+</main>
+
+<footer>
+    Proyecto realizado por Javier Carrasco
+</footer>
+
+</body>
+</html>
