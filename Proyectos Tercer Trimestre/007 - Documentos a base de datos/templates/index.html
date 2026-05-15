@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentos a base de datos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="cabecera">
+    <h1>Documentos a base de datos</h1>
+    <p>Visor de módulos extraídos desde documentos</p>
+</header>
+
+<main class="contenedor">
+
+    <form class="buscador" method="get">
+        <input 
+            type="text" 
+            name="buscar" 
+            placeholder="Buscar módulo..."
+            value="{{ busqueda }}"
+        >
+        <button type="submit">Buscar</button>
+    </form>
+
+    <section class="grid">
+
+        {% for modulo in modulos %}
+            <article class="tarjeta">
+                <div class="tarjeta-cabecera">
+                    <h2>{{ modulo.nombre }}</h2>
+                    <span>{{ modulo.codigo }}</span>
+                </div>
+
+                <p><strong>Horas:</strong> {{ modulo.horas }}</p>
+
+                <details>
+                    <summary>Resultados de aprendizaje</summary>
+                    <ul>
+                        {% for resultado in modulo.resultados %}
+                            <li>{{ resultado }}</li>
+                        {% endfor %}
+                    </ul>
+                </details>
+
+                <details>
+                    <summary>Contenidos</summary>
+                    <ul>
+                        {% for contenido in modulo.contenidos %}
+                            <li>{{ contenido }}</li>
+                        {% endfor %}
+                    </ul>
+                </details>
+            </article>
+        {% endfor %}
+
+        {% if modulos|length == 0 %}
+            <div class="vacio">
+                No se han encontrado módulos.
+            </div>
+        {% endif %}
+
+    </section>
+
+</main>
+
+</body>
+</html>
