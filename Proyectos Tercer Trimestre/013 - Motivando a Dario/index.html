@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor Canvas y Mini CAD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            color: #222;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+            font-size: 38px;
+        }
+
+        header p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .intro {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 22px rgba(0,0,0,.06);
+        }
+
+        .intro h2 {
+            margin-top: 0;
+        }
+
+        .intro p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            display: block;
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            text-decoration: none;
+            color: #222;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 22px rgba(0,0,0,.06);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(0,0,0,.12);
+        }
+
+        .card span {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+        }
+
+        .card p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .final {
+            border: 2px solid #2563eb;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Editor Canvas y Mini CAD</h1>
+    <p>Proyecto de dibujo interactivo con HTML5 Canvas y JavaScript</p>
+</header>
+
+<main>
+    <section class="intro">
+        <h2>Descripción del proyecto</h2>
+        <p>
+            Este proyecto muestra una evolución desde un sistema básico de dibujo con ratón
+            hasta una herramienta más completa con pinceles, efecto óleo y un mini programa CAD.
+            Está desarrollado con HTML, CSS y JavaScript utilizando el elemento Canvas.
+        </p>
+    </section>
+
+    <section class="grid">
+        <a class="card" href="01_dibujo_basico.html">
+            <span>Paso 1</span>
+            <h3>Dibujo básico</h3>
+            <p>Permite dibujar líneas libres moviendo el ratón sobre el lienzo.</p>
+        </a>
+
+        <a class="card" href="02_color_grosor.html">
+            <span>Paso 2</span>
+            <h3>Color y grosor</h3>
+            <p>Añade controles para cambiar el color y el grosor del trazo.</p>
+        </a>
+
+        <a class="card" href="03_pintura_oleo_simple.html">
+            <span>Paso 3</span>
+            <h3>Óleo simple</h3>
+            <p>Simula un pincel cuyo trazo pierde grosor y opacidad progresivamente.</p>
+        </a>
+
+        <a class="card" href="04_pintura_oleo_avanzada.html">
+            <span>Paso 4</span>
+            <h3>Óleo avanzado</h3>
+            <p>Incluye arrastre, mezcla de color y contaminación del pincel.</p>
+        </a>
+
+        <a class="card" href="05_pintura_oleo_completa.html">
+            <span>Paso 5</span>
+            <h3>Óleo completo</h3>
+            <p>Añade duración del pincel y estampación elíptica para un efecto más realista.</p>
+        </a>
+
+        <a class="card final" href="06_mini_cad.html">
+            <span>Final</span>
+            <h3>Mini CAD</h3>
+            <p>Herramienta final con líneas, rectángulos y círculos editables por el usuario.</p>
+        </a>
+    </section>
+</main>
+
+<footer>
+    Proyecto realizado con HTML5 Canvas, CSS y JavaScript.
+</footer>
+
+</body>
+</html>
