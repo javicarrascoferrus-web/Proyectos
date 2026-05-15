@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SportHub | Tienda deportiva</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="cabecera">
+    <div>
+        <h1>CarrascoSport</h1>
+        <p>Tienda deportiva creada con Python y Flask</p>
+    </div>
+
+    <button id="abrirCarrito" class="boton-carrito">
+        Carrito <span id="contador">0</span>
+    </button>
+</header>
+
+<section class="hero">
+    <h2>Equípate para entrenar mejor</h2>
+    <p>Productos deportivos seleccionados para mejorar tu rendimiento.</p>
+</section>
+
+<main class="productos">
+    {% for producto in productos %}
+        <article class="producto">
+            <div class="icono">🏋️</div>
+
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+
+            <strong>{{ "%.2f"|format(producto.precio) }} €</strong>
+
+            <button 
+                class="anadir"
+                data-id="{{ producto.id }}"
+                data-nombre="{{ producto.nombre }}"
+                data-precio="{{ producto.precio }}"
+            >
+                Añadir al carrito
+            </button>
+        </article>
+    {% endfor %}
+</main>
+
+<aside id="carrito" class="carrito">
+    <div class="carrito-header">
+        <h2>Tu pedido</h2>
+        <button id="cerrarCarrito">×</button>
+    </div>
+
+    <div id="listaCarrito" class="lista-carrito"></div>
+
+    <div class="carrito-footer">
+        <p>Total: <strong id="total">0.00 €</strong></p>
+        <button id="vaciar">Vaciar</button>
+        <button id="comprar">Comprar</button>
+    </div>
+</aside>
+
+<div id="overlay" class="overlay"></div>
+
+<section id="modal" class="modal">
+    <div class="modal-card">
+        <button id="cerrarModal" class="cerrar-modal">×</button>
+
+        <h2>Finalizar compra</h2>
+
+        <form id="formularioCompra">
+            <label>Nombre</label>
+            <input type="text" id="nombre" required>
+
+            <label>Email</label>
+            <input type="email" id="email" required>
+
+            <label>Dirección</label>
+            <textarea id="direccion" required></textarea>
+
+            <button type="submit">Confirmar pedido</button>
+        </form>
+
+        <p id="mensaje"></p>
+    </div>
+</section>
+
+<footer>
+    Proyecto realizado por Javier Carrasco.
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
