@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizador inteligente de páginas web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Analizador inteligente de páginas web</h1>
+    <p>Introduce una URL y deja que la IA analice el contenido de la página.</p>
+</header>
+
+<main class="contenedor">
+
+    <section class="tarjeta">
+        <h2>Analizar sitio web</h2>
+
+        <form method="POST">
+            <label for="url">Dirección web</label>
+
+            <input
+                type="url"
+                id="url"
+                name="url"
+                placeholder="https://ejemplo.com"
+                value="{{ url }}"
+                required
+            >
+
+            <button type="submit">Analizar con IA</button>
+        </form>
+    </section>
+
+    {% if resultado %}
+    <section class="resultado">
+        <h2>Resultado del análisis</h2>
+        <div class="texto-resultado">
+            {{ resultado }}
+        </div>
+    </section>
+    {% endif %}
+
+</main>
+
+</body>
+</html>
