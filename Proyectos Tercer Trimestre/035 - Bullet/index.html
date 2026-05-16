@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BulletPad</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div>
+        <h1>BulletPad</h1>
+        <p>Editor rápido de ideas y listas</p>
+    </div>
+
+    <nav>
+        <button id="btnNuevo">Nuevo</button>
+        <button id="btnGuardar">Guardar TXT</button>
+        <button id="btnAbrir">Abrir TXT</button>
+    </nav>
+</header>
+
+<input type="file" id="inputArchivo" accept=".txt" hidden>
+
+<main class="workspace">
+    <section class="info">
+        <strong id="contador">0</strong>
+        <span>elementos en la lista</span>
+    </section>
+
+    <ul id="lista"></ul>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
