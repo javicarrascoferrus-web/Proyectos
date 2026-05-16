@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Respuestas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Respuestas recibidas</h1>
+    <a href="{{ url_for('panel') }}">Volver al panel</a>
+</header>
+
+<main>
+    <section class="card">
+        <h2>{{ formulario.titulo }}</h2>
+
+        {% if datos_respuestas %}
+            {% for bloque in datos_respuestas %}
+                <div class="respuesta-box">
+                    <h3>Respuesta #{{ bloque.respuesta.id }}</h3>
+                    <p><strong>Fecha:</strong> {{ bloque.respuesta.enviado_en }}</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Campo</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in bloque.items %}
+                                <tr>
+                                    <td>{{ item.campo }}</td>
+                                    <td>{{ item.valor }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Este formulario todavía no tiene respuestas.</p>
+        {% endif %}
+    </section>
+</main>
+
+</body>
+</html>
