@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agente WhatsApp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="chat-body">
+
+<div class="chat-wrapper">
+
+    <main id="chatBox" class="chat-box">
+        <section id="mensajes" class="mensajes"></section>
+
+        <input
+            type="text"
+            id="entrada"
+            placeholder="Introduce tu teléfono"
+            autocomplete="off"
+        >
+    </main>
+
+    <aside id="fichaUsuario" class="ficha">
+        <h3>Usuario</h3>
+        <div id="contenidoFicha"></div>
+    </aside>
+
+</div>
+
+<script>
+let entrada = document.querySelector("#entrada")
+let mensajes = document.querySelector("#mensajes")
+let chatBox = document.querySelector("#chatBox")
+let ficha = document.querySelector("#fichaUsuario")
+let contenidoFicha = document.querySelector("#contenidoFicha")
+
+let telefono = ""
+let telefonoIntroducido = false
+
+function insertarMensaje(texto, clase){
+    let articulo = document.createElement("article")
+    articulo.classList.add(clase)
+    articulo.textContent = texto
+
+    mensajes.appendChild(articulo)
+    mensajes.scrollTop = mensajes.scrollHeight
+}
+
+function mostrarFicha(usuario){
+    ficha.classList.add("visible")
+
+    if(!usuario || !usuario.existe){
+        contenidoFicha.innerHTML = `
+            <div class="linea">
+                <span class="nuevo">Nuevo usuario</span>
+            </div>
+            <div class="linea">
+                <span class="label">Teléfono:</span> ${telefono}
+            </div>
+        `
+        return
+    }
+
+    contenidoFicha.innerHTML = `
+        <div class="linea"><span class="label">Nombre:</span> ${usuario.nombre}</div>
+        <div class="linea"><span class="label">Apellidos:</span> ${usuario.apellidos}</div>
+        <div class="linea"><span class="label">Email:</span> ${usuario.email}</div>
+        <div class="linea"><span class="label">Teléfono:</span> ${usuario.telefono}</div>
+        <div class="linea"><span class="label">Curso:</span> ${usuario.curso_matriculado}</div>
+    `
+}
+
+async function identificarTelefono(tel){
+    try{
+        let respuesta = await fetch("/api/identificar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                telefono: tel
+            })
+        })
+
+        let datos = await respuesta.json()
+
+        mostrarFicha(datos)
+        insertarMensaje("Perfecto. Ya puedes escribir tu pregunta.", "respuesta")
+
+    }catch(error){
+        mostrarFicha({existe:false})
+        insertarMensaje("Perfecto. Ya puedes escribir tu pregunta.", "respuesta")
+    }
+}
+
+async function enviarPregunta(texto){
+    try{
+        let respuesta = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                mensaje: texto,
+                telefono: telefono
+            })
+        })
+
+        let datos = await respuesta.json()
+
+        insertarMensaje(datos.respuesta, "respuesta")
+
+    }catch(error){
+        insertarMensaje("Ha ocurrido un error al contactar con el servidor.", "respuesta")
+    }
+}
+
+entrada.addEventListener("keypress", function(event){
+    if(event.key !== "Enter") return
+
+    let valor = entrada.value.trim()
+
+    if(valor === "") return
+
+    entrada.value = ""
+
+    if(!telefonoIntroducido){
+        telefono = valor
+        telefonoIntroducido = true
+
+        chatBox.classList.add("abierto")
+
+        insertarMensaje("Mi teléfono es: " + telefono, "pregunta")
+
+        entrada.placeholder = "Introduce tu pregunta"
+
+        identificarTelefono(telefono)
+        return
+    }
+
+    insertarMensaje(valor, "pregunta")
+    enviarPregunta(valor)
+})
+</script>
+
+</body>
+</html>
