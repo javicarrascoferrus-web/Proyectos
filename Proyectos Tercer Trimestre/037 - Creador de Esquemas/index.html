@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EsquemaDraw</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header id="barraHerramientas">
+    <div class="marca">
+        <strong>EsquemaDraw</strong>
+        <span>Creador visual de esquemas SVG</span>
+    </div>
+
+    <div class="grupo">
+        <span>Herramienta</span>
+        <button class="tool active" data-tool="select">Seleccionar</button>
+        <button class="tool" data-tool="pen">Lápiz</button>
+        <button class="tool" data-tool="arrow">Flecha</button>
+        <button class="tool" data-tool="text">Texto</button>
+        <button class="tool" data-tool="rect">Rectángulo</button>
+        <button class="tool" data-tool="circle">Círculo</button>
+        <button class="tool" data-tool="ellipse">Elipse</button>
+    </div>
+
+    <div class="grupo">
+        <span>Color</span>
+        <input type="color" id="colorInput" value="#1f2937">
+    </div>
+
+    <div class="grupo">
+        <span>Grosor</span>
+        <select id="widthInput">
+            <option value="2">Fino</option>
+            <option value="4">Medio</option>
+            <option value="8">Grueso</option>
+            <option value="14">Muy grueso</option>
+        </select>
+    </div>
+
+    <div class="grupo">
+        <button id="btnNuevo">Nuevo</button>
+        <button id="btnGuardar">Guardar SVG</button>
+        <button id="btnAbrir">Abrir SVG</button>
+    </div>
+</header>
+
+<input type="file" id="fileInput" accept=".svg,image/svg+xml" hidden>
+
+<svg id="lienzo">
+    <defs>
+        <marker
+            id="puntaFlecha"
+            markerWidth="10"
+            markerHeight="10"
+            refX="8"
+            refY="3"
+            orient="auto"
+            markerUnits="strokeWidth">
+            <path d="M 0 0 L 8 3 L 0 6 Z" fill="context-stroke"></path>
+        </marker>
+    </defs>
+
+    <g id="escenario"></g>
+</svg>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
