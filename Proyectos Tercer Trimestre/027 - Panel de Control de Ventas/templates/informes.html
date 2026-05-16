@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h1>Informes de ventas</h1>
+
+<section class="stats-grid">
+    <div class="stat-card">
+        <h3>Total vendido</h3>
+        <p>{{ "%.2f"|format(total_ventas) }} €</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Clientes</h3>
+        <p>{{ total_clientes }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Productos</h3>
+        <p>{{ total_productos }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Pedidos</h3>
+        <p>{{ total_pedidos }}</p>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Productos más vendidos</h2>
+
+    {% if productos_vendidos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Unidades vendidas</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for producto in productos_vendidos %}
+                    <tr>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.cantidad }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Todavía no hay ventas registradas.</p>
+    {% endif %}
+</section>
+
+{% endblock %}
