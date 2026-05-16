@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<aside>
+    <h2>Ventas</h2>
+
+    <nav>
+        <a href="{{ url_for('listar', tabla='clientes') }}">Clientes</a>
+        <a href="{{ url_for('listar', tabla='productos') }}">Productos</a>
+        <a href="{{ url_for('listar', tabla='pedidos') }}">Pedidos</a>
+        <a href="{{ url_for('listar', tabla='lineas_pedido') }}">Líneas pedido</a>
+        <a href="{{ url_for('informes') }}">Informes</a>
+    </nav>
+</aside>
+
+<main>
+    {% block contenido %}{% endblock %}
+</main>
+
+</body>
+</html>
