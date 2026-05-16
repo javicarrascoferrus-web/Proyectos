@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularios Condicionales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Formulario generado con Python</h1>
+
+<form method="post">
+
+    {% macro render_campos(campos) %}
+        {% for campo in campos %}
+
+            {% if campo.tipo in ["text", "number", "email", "date"] %}
+                <div>
+                    <label>{{ campo.etiqueta }}</label><br>
+                    <input type="{{ campo.tipo }}" name="{{ campo.name }}">
+                </div>
+                <br>
+            {% endif %}
+
+            {% if campo.tipo == "textarea" %}
+                <div>
+                    <label>{{ campo.etiqueta }}</label><br>
+                    <textarea name="{{ campo.name }}"></textarea>
+                </div>
+                <br>
+            {% endif %}
+
+            {% if campo.tipo == "radio" %}
+                <div>
+                    <p><strong>{{ campo.etiqueta }}</strong></p>
+
+                    {% for opcion in campo.opciones %}
+                        {% set cond_id = crear_id_condicional(campo.name, opcion.valor) %}
+
+                        <label>
+                            <input 
+                                type="radio"
+                                name="{{ campo.name }}"
+                                value="{{ opcion.valor }}"
+                                data-group="{{ campo.name }}"
+                                data-target="{{ cond_id }}"
+                            >
+                            {{ opcion.valor }}
+                        </label>
+
+                        <div 
+                            id="{{ cond_id }}"
+                            class="condicional"
+                            data-parent-group="{{ campo.name }}"
+                            style="display:none; margin-left:25px;"
+                        >
+                            {{ render_campos(opcion.hijos) }}
+                        </div>
+
+                        <br>
+                    {% endfor %}
+                </div>
+                <br>
+            {% endif %}
+
+            {% if campo.tipo == "select" %}
+                <div>
+                    <label>{{ campo.etiqueta }}</label><br>
+
+                    <select name="{{ campo.name }}" class="select-condicional" data-group="{{ campo.name }}">
+                        <option value="">Selecciona una opción</option>
+
+                        {% for opcion in campo.opciones %}
+                            {% set cond_id = crear_id_condicional(campo.name, opcion.valor) %}
+                            <option value="{{ opcion.valor }}" data-target="{{ cond_id }}">
+                                {{ opcion.valor }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    {% for opcion in campo.opciones %}
+                        {% set cond_id = crear_id_condicional(campo.name, opcion.valor) %}
+
+                        <div 
+                            id="{{ cond_id }}"
+                            class="condicional"
+                            data-parent-group="{{ campo.name }}"
+                            style="display:none; margin-left:25px;"
+                        >
+                            {{ render_campos(opcion.hijos) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <br>
+            {% endif %}
+
+            {% if campo.tipo == "checkbox" %}
+                <div>
+                    <p><strong>{{ campo.etiqueta }}</strong></p>
+
+                    {% for opcion in campo.opciones %}
+                        {% set cond_id = crear_id_condicional(campo.name, opcion.valor) %}
+
+                        <label>
+                            <input 
+                                type="checkbox"
+                                name="{{ campo.name }}[]"
+                                value="{{ opcion.valor }}"
+                                data-target="{{ cond_id }}"
+                            >
+                            {{ opcion.valor }}
+                        </label>
+
+                        <div 
+                            id="{{ cond_id }}"
+                            class="condicional"
+                            style="display:none; margin-left:25px;"
+                        >
+                            {{ render_campos(opcion.hijos) }}
+                        </div>
+
+                        <br>
+                    {% endfor %}
+                </div>
+                <br>
+            {% endif %}
+
+        {% endfor %}
+    {% endmacro %}
+
+    {{ render_campos(estructura) }}
+
+    <button type="submit">Enviar</button>
+</form>
+
+<script>
+function limpiarCampos(contenedor) {
+    contenedor.querySelectorAll("input, textarea, select").forEach(function(input) {
+        if (input.type === "radio" || input.type === "checkbox") {
+            input.checked = false;
+        } else {
+            input.value = "";
+        }
+    });
+
+    contenedor.querySelectorAll(".condicional").forEach(function(bloque) {
+        bloque.style.display = "none";
+    });
+}
+
+function ocultarGrupo(nombreGrupo) {
+    document.querySelectorAll('.condicional[data-parent-group="' + nombreGrupo + '"]').forEach(function(bloque) {
+        limpiarCampos(bloque);
+        bloque.style.display = "none";
+    });
+}
+
+document.querySelectorAll('input[type="radio"][data-target]').forEach(function(radio) {
+    radio.addEventListener("change", function() {
+        ocultarGrupo(this.dataset.group);
+
+        const bloque = document.getElementById(this.dataset.target);
+        if (bloque) {
+            bloque.style.display = "block";
+        }
+    });
+});
+
+document.querySelectorAll(".select-condicional").forEach(function(select) {
+    select.addEventListener("change", function() {
+        ocultarGrupo(this.dataset.group);
+
+        const opcion = this.options[this.selectedIndex];
+        const target = opcion.dataset.target;
+
+        if (target) {
+            const bloque = document.getElementById(target);
+            if (bloque) {
+                bloque.style.display = "block";
+            }
+        }
+    });
+});
+
+document.querySelectorAll('input[type="checkbox"][data-target]').forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+        const bloque = document.getElementById(this.dataset.target);
+
+        if (!bloque) return;
+
+        if (this.checked) {
+            bloque.style.display = "block";
+        } else {
+            limpiarCampos(bloque);
+            bloque.style.display = "none";
+        }
+    });
+});
+</script>
+
+</body>
+</html>
