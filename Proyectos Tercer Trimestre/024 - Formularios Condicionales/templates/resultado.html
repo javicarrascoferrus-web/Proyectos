@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado del formulario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Datos recibidos</h1>
+
+<form>
+    {% for campo, valores in datos.items() %}
+        <div>
+            <label>{{ campo }}</label>
+            <p>
+                {% for valor in valores %}
+                    {{ valor }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </div>
+        <br>
+    {% endfor %}
+
+    <a href="/">Volver al formulario</a>
+</form>
+
+</body>
+</html>
