@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2f5;
+    color: #222;
+}
+
+header {
+    background: #1f2937;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 8px;
+    color: #d1d5db;
+}
+
+.contenedor {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: calc(100vh - 92px);
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.btn-secundario {
+    margin-top: 8px;
+    background: #6b7280;
+}
+
+.btn-secundario:hover {
+    background: #4b5563;
+}
+
+#mensaje {
+    margin: 15px 0;
+    padding: 10px;
+    background: #f3f4f6;
+    border-left: 4px solid #2563eb;
+    font-size: 14px;
+}
+
+.tarjeta-info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 18px;
+}
+
+.tarjeta-info span {
+    display: block;
+    font-size: 13px;
+    color: #374151;
+}
+
+.tarjeta-info strong {
+    display: block;
+    font-size: 26px;
+    margin-top: 4px;
+    color: #1d4ed8;
+}
+
+#listaUsuarios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#listaUsuarios li {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#listaUsuarios li:hover {
+    background: #eef2ff;
+}
+
+.mapa-contenedor {
+    width: 100%;
+    height: 100%;
+}
+
+#mapa {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 800px) {
+
+    .contenedor {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .panel {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #mapa {
+        height: 500px;
+    }
+}
