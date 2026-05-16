@@ -1,0 +1,29 @@
+portada
+    MiniSlides
+    Presentaciones interactivas desde un archivo de texto.
+
+lista
+    Características
+    Navegación horizontal
+    Control con teclado
+    Indicadores inferiores
+    Carga de archivos TXT
+    Plantillas reutilizables
+
+texto
+    Funcionamiento
+    El sistema lee un archivo de texto estructurado.
+    Cada bloque se convierte automáticamente en una diapositiva.
+
+frase
+    Una presentación sencilla también puede parecer profesional.
+    MiniSlides
+
+media
+    Zona multimedia
+    Esta diapositiva permite combinar texto con una imagen.
+    https://picsum.photos/800/500
+
+cierre
+    Gracias
+    Fin de la presentación.
