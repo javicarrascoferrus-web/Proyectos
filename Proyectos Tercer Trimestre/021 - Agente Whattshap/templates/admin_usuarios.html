@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración Usuarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <aside class="sidebar">
+        <h2>Panel Admin</h2>
+
+        <a href="{{ url_for('admin_usuarios') }}">Usuarios</a>
+        <a href="{{ url_for('admin_chatbot') }}">Chatbot</a>
+        <a href="{{ url_for('admin_ifttt') }}">IFTTT</a>
+        <a href="{{ url_for('admin_logout') }}">Cerrar sesión</a>
+    </aside>
+
+    <main class="contenido-admin">
+
+        <h1>Gestión de Usuarios</h1>
+
+        <div class="form-box">
+            <h3>Nuevo usuario</h3>
+
+            <form method="POST">
+
+                <div class="campo">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" required>
+                </div>
+
+                <div class="campo">
+                    <label>Apellidos</label>
+                    <input type="text" name="apellidos" required>
+                </div>
+
+                <div class="campo">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="campo">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono" required>
+                </div>
+
+                <div class="campo">
+                    <label>Curso matriculado</label>
+                    <input type="text" name="curso_matriculado" required>
+                </div>
+
+                <button class="btn" type="submit">
+                    Crear usuario
+                </button>
+
+            </form>
+        </div>
+
+        <div class="tabla-box">
+            <h3>Listado de usuarios</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Curso</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nombre }}</td>
+                        <td>{{ usuario.apellidos }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.telefono }}</td>
+                        <td>{{ usuario.curso_matriculado }}</td>
+                        <td>{{ usuario.creado_en }}</td>
+                        <td>
+                            <a class="btn-delete"
+                               href="{{ url_for('eliminar_usuario', usuario_id=usuario.id) }}">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
