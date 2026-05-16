@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    color: #1f2937;
+}
+
+.contenedor {
+    width: min(950px, 92%);
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.tarjeta {
+    background: white;
+    padding: 32px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+h1 {
+    margin-top: 0;
+    color: #0f172a;
+}
+
+p {
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+form {
+    display: flex;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+button {
+    padding: 14px 22px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.respuesta {
+    margin-top: 28px;
+    padding: 22px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+}
+
+.respuesta h2 {
+    margin-top: 0;
+}
+
+.respuesta div {
+    white-space: pre-wrap;
+    line-height: 1.7;
+}
+
+footer {
+    margin-top: 28px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+    form {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
