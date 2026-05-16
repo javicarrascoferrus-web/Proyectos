@@ -1,0 +1,252 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: system-ui, Arial, sans-serif;
+    background: #f6f8fb;
+    color: #172033;
+}
+
+.barra {
+    position: fixed;
+    top: 20px;
+    left: 30px;
+    right: 30px;
+    height: 70px;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(14px);
+    border: 1px solid #dbe3ef;
+    border-radius: 18px;
+    padding: 0 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.icono {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #14b8a6, #2563eb);
+}
+
+.marca h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.marca p {
+    margin: 3px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ayuda {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#visor {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+}
+
+.diapositiva {
+    min-width: 100vw;
+    height: 100vh;
+    padding: 140px 80px 100px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.etiqueta {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.diapositiva h2 {
+    font-size: 58px;
+    line-height: 1.05;
+    margin: 0 0 24px;
+    max-width: 900px;
+}
+
+.diapositiva p {
+    font-size: 23px;
+    line-height: 1.55;
+    max-width: 850px;
+    color: #475569;
+}
+
+.portada {
+    background: linear-gradient(135deg, #ffffff, #dff7f3);
+}
+
+.lista {
+    background: #ffffff;
+}
+
+.lista ul {
+    list-style: none;
+    padding: 0;
+    max-width: 850px;
+}
+
+.lista li {
+    background: #eef6ff;
+    margin-bottom: 14px;
+    padding: 18px 22px;
+    border-radius: 16px;
+    font-size: 24px;
+}
+
+.texto {
+    background: #f8fafc;
+}
+
+.texto .caja {
+    background: white;
+    padding: 42px;
+    border-radius: 24px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+}
+
+.frase {
+    background: #172033;
+    color: white;
+}
+
+.frase blockquote {
+    font-size: 48px;
+    line-height: 1.25;
+    max-width: 900px;
+    margin: 0;
+}
+
+.frase cite {
+    margin-top: 26px;
+    color: #cbd5e1;
+    font-size: 20px;
+}
+
+.media {
+    background: #eef2ff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.media img,
+.imagen-falsa {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #bfdbfe, #ccfbf1);
+    box-shadow: 0 20px 55px rgba(37,99,235,0.18);
+}
+
+.cierre {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: white;
+    text-align: center;
+    align-items: center;
+}
+
+.cierre p {
+    color: #dbeafe;
+}
+
+#navegacion {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    gap: 10px;
+    background: rgba(255,255,255,0.9);
+    padding: 12px 16px;
+    border-radius: 999px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.14);
+}
+
+.punto {
+    width: 12px;
+    height: 12px;
+    border: 0;
+    border-radius: 999px;
+    background: #94a3b8;
+    cursor: pointer;
+    padding: 0;
+    transition: 0.25s;
+}
+
+.punto.activo {
+    width: 34px;
+    background: #14b8a6;
+}
+
+#zonaDrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15,23,42,0.75);
+    color: white;
+    font-size: 34px;
+    font-weight: 800;
+    backdrop-filter: blur(10px);
+}
+
+#zonaDrop.visible {
+    display: flex;
+}
+
+@media (max-width: 800px) {
+    .diapositiva {
+        padding: 130px 30px 90px;
+    }
+
+    .diapositiva h2 {
+        font-size: 38px;
+    }
+
+    .media {
+        grid-template-columns: 1fr;
+    }
+
+    .ayuda {
+        display: none;
+    }
+}
