@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>NaN Campus - Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') }}">NaN <span>Campus</span></a>
+
+    <div class="userbox">
+        <span>{{ usuario.nombre }} · {{ usuario.perfil }}</span>
+        <a href="{{ url_for('logout') }}">Salir</a>
+    </div>
+</header>
+
+<main class="shell">
+    <section class="dashboard">
+        <h1>Mis asignaturas</h1>
+        <p class="muted">Selecciona una asignatura para ver sus contenidos.</p>
+
+        <div class="grid-cards">
+            {% for asignatura in asignaturas %}
+                <a class="subject-card" href="{{ url_for('asignatura', asignatura_id=asignatura.id) }}">
+                    <span>{{ asignatura.curso }}</span>
+                    <h2>{{ asignatura.nombre }}</h2>
+                    <p>{{ asignatura.descripcion }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
