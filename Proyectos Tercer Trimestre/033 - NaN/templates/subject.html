@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ asignatura.nombre }} - NaN Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') }}">NaN <span>Campus</span></a>
+
+    <div class="userbox">
+        <span>{{ usuario.nombre }} · {{ usuario.perfil }}</span>
+        <a href="{{ url_for('logout') }}">Salir</a>
+    </div>
+</header>
+
+<main class="subject-page">
+
+    <aside class="content-tree">
+        <a class="back" href="{{ url_for('dashboard') }}">← Asignaturas</a>
+
+        <h3>{{ asignatura.nombre }}</h3>
+        <p>{{ asignatura.curso }}</p>
+
+        <ul class="tree">
+            {% for unidad in unidades %}
+                <li>
+                    <strong>{{ unidad.titulo }}</strong>
+
+                    <ul>
+                        {% for tema in temas if tema.unidad_id == unidad.id %}
+                            <li>
+                                {{ tema.titulo }}
+
+                                <ul>
+                                    {% for leccion in lecciones if leccion.tema_id == tema.id %}
+                                        <li>
+                                            {{ leccion.titulo }}
+
+                                            <ul>
+                                                {% for sesion in sesiones if sesion.leccion_id == leccion.id %}
+                                                    <li>{{ sesion.titulo }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section class="reader">
+        <div class="reader-head">
+            <div>
+                <span>{{ asignatura.curso }}</span>
+                <h1>{{ asignatura.nombre }}</h1>
+            </div>
+        </div>
+
+        <div class="prose">
+            <p>{{ asignatura.descripcion }}</p>
+
+            <h2>Unidades</h2>
+
+            {% for unidad in unidades %}
+                <article class="plain-box">
+                    <h3>{{ unidad.titulo }}</h3>
+                    <p>{{ unidad.descripcion }}</p>
+                </article>
+            {% endfor %}
+
+            <h2>Recursos</h2>
+
+            {% for recurso in recursos %}
+                <article class="plain-box">
+                    <h3>{{ recurso.titulo }}</h3>
+                    <p>{{ recurso.descripcion }}</p>
+                    {% if recurso.url %}
+                        <a href="{{ recurso.url }}" target="_blank">Ver recurso</a>
+                    {% endif %}
+                </article>
+            {% else %}
+                <p class="muted">No hay recursos disponibles.</p>
+            {% endfor %}
+
+            <h2>Tareas</h2>
+
+            {% for tarea in tareas %}
+                <article class="plain-box">
+                    <h3>{{ tarea.titulo }}</h3>
+                    <p>{{ tarea.descripcion }}</p>
+                    <p><strong>Entrega:</strong> {{ tarea.fecha_entrega }}</p>
+                    <p><strong>Puntuación máxima:</strong> {{ tarea.puntuacion_maxima }}</p>
+                </article>
+            {% else %}
+                <p class="muted">No hay tareas disponibles.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>
