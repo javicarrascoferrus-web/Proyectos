@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Divisor de PDF</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Divisor de PDF</h1>
+    <p>Sube un PDF y sepáralo en páginas individuales</p>
+</header>
+
+<main>
+    <section class="card">
+        <h2>Subir archivo</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="pdf" accept=".pdf" required>
+            <button type="submit">Dividir PDF</button>
+        </form>
+
+        {% if mensaje %}
+            <p class="mensaje">{{ mensaje }}</p>
+        {% endif %}
+    </section>
+
+    {% if archivos %}
+    <section class="card">
+        <h2>Páginas generadas</h2>
+
+        <ul>
+            {% for archivo in archivos %}
+                <li>
+                    <span>{{ archivo }}</span>
+                    <a href="{{ url_for('descargar', nombre_archivo=archivo) }}">Descargar</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <a class="zip" href="{{ url_for('descargar_zip') }}">
+            Descargar todo en ZIP
+        </a>
+    </section>
+    {% endif %}
+</main>
+
+</body>
+</html>
