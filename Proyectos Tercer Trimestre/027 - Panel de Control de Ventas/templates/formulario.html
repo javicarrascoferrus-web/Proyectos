@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h1>{{ accion }} {{ tabla|capitalize }}</h1>
+
+<form method="POST" class="formulario">
+
+    {% for columna in columnas %}
+        <label>{{ columna }}</label>
+
+        {% if columna in opciones_fk %}
+            <select name="{{ columna }}" required>
+                {% for opcion in opciones_fk[columna] %}
+                    <option 
+                        value="{{ opcion.id }}"
+                        {% if registro and registro[columna] == opcion.id %}selected{% endif %}
+                    >
+                        {{ opcion.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+
+        {% elif "descripcion" in columna %}
+            <textarea name="{{ columna }}">{{ registro[columna] if registro else "" }}</textarea>
+
+        {% elif "fecha" in columna %}
+            <input type="date" name="{{ columna }}" value="{{ registro[columna] if registro else "" }}" required>
+
+        {% elif "precio" in columna or "total" in columna %}
+            <input type="number" step="0.01" name="{{ columna }}" value="{{ registro[columna] if registro else "" }}" required>
+
+        {% elif "stock" in columna or "cantidad" in columna %}
+            <input type="number" name="{{ columna }}" value="{{ registro[columna] if registro else "" }}" required>
+
+        {% else %}
+            <input type="text" name="{{ columna }}" value="{{ registro[columna] if registro else "" }}" required>
+        {% endif %}
+    {% endfor %}
+
+    <button type="submit">Guardar</button>
+
+    <a class="volver" href="{{ url_for('listar', tabla=tabla) }}">
+        Volver
+    </a>
+
+</form>
+
+{% endblock %}
