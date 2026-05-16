@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Localizador de compañeros</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Localizador de compañeros</h1>
+    <p>Consulta la ubicación de usuarios registrados en tiempo real.</p>
+</header>
+
+<main class="contenedor">
+
+    <section class="panel">
+
+        <h2>Mi ubicación</h2>
+
+        <label for="nombreUsuario">Nombre de usuario</label>
+
+        <input
+            type="text"
+            id="nombreUsuario"
+            placeholder="Introduce tu nombre"
+        >
+
+        <button id="btnUbicacion">
+            Guardar mi ubicación
+        </button>
+
+        <button id="btnBorrarNombre" class="btn-secundario">
+            Borrar nombre guardado
+        </button>
+
+        <div id="mensaje">
+            Introduce tu nombre y pulsa el botón.
+        </div>
+
+        <div class="tarjeta-info">
+            <span>Total de usuarios registrados</span>
+            <strong id="totalUsuarios">0</strong>
+        </div>
+
+        <h2>Usuarios conectados</h2>
+
+        <ul id="listaUsuarios"></ul>
+
+    </section>
+
+    <section class="mapa-contenedor">
+        <div id="mapa"></div>
+    </section>
+
+</main>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
