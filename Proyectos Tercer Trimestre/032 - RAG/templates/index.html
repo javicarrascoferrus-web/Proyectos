@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Asistente RAG para documentos técnicos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+<main class="contenedor">
+    <section class="tarjeta">
+        <h1>Asistente RAG para documentos técnicos</h1>
+
+        <p>
+            Realiza una pregunta sobre el documento indexado y el sistema buscará
+            información relevante para generar una respuesta con IA.
+        </p>
+
+        <form method="POST">
+            <input
+                type="text"
+                name="pregunta"
+                placeholder="Ejemplo: ¿Qué es una vista en MySQL?"
+                value="{{ pregunta }}"
+                required
+            >
+
+            <button type="submit">Preguntar</button>
+        </form>
+
+        {% if respuesta %}
+            <section class="respuesta">
+                <h2>Respuesta</h2>
+                <p><strong>Pregunta:</strong> {{ pregunta }}</p>
+                <div>{{ respuesta }}</div>
+            </section>
+        {% endif %}
+
+        <footer>
+            Embeddings: {{ embed_model }} · Modelo IA: {{ text_model }}
+        </footer>
+    </section>
+</main>
+
+</body>
+</html>
