@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h1>{{ tabla|capitalize }}</h1>
+
+<a class="btn-crear" href="{{ url_for('crear', tabla=tabla) }}">
+    Añadir registro
+</a>
+
+<form method="GET" class="buscador">
+    <input type="text" name="buscar" placeholder="Buscar..." value="{{ busqueda }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            {% for columna in columnas %}
+                <th>{{ columna }}</th>
+            {% endfor %}
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for registro in registros %}
+            <tr>
+                {% for columna in columnas %}
+                    <td>{{ registro[columna] }}</td>
+                {% endfor %}
+
+                <td>
+                    <a class="editar" href="{{ url_for('editar', tabla=tabla, id=registro['id']) }}">
+                        Editar
+                    </a>
+
+                    <a 
+                        class="eliminar"
+                        href="{{ url_for('eliminar', tabla=tabla, id=registro['id']) }}"
+                        onclick="return confirm('¿Seguro que quieres eliminar este registro?')"
+                    >
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ columnas|length + 1 }}">No hay registros.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="paginacion">
+    {% for numero in range(1, total_paginas + 1) %}
+        <a 
+            href="{{ url_for('listar', tabla=tabla, buscar=busqueda, pagina=numero) }}"
+            class="{% if numero == pagina %}activo{% endif %}"
+        >
+            {{ numero }}
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock %}
