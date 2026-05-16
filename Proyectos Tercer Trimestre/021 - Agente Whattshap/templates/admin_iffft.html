@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <aside class="sidebar">
+        <h2>Panel Admin</h2>
+
+        <a href="{{ url_for('admin_usuarios') }}">Usuarios</a>
+        <a href="{{ url_for('admin_chatbot') }}">Chatbot</a>
+        <a href="{{ url_for('admin_ifttt') }}">IFTTT</a>
+        <a href="{{ url_for('admin_logout') }}">Cerrar sesión</a>
+    </aside>
+
+    <main class="contenido-admin">
+
+        <h1>Preguntas y Respuestas del Chatbot</h1>
+
+        <div class="form-box">
+            <h3>Nueva respuesta automática</h3>
+
+            <form method="POST">
+
+                <div class="campo">
+                    <label>Pregunta</label>
+                    <input type="text" name="pregunta" required>
+                </div>
+
+                <div class="campo">
+                    <label>Respuesta</label>
+                    <textarea name="respuesta" required></textarea>
+                </div>
+
+                <button class="btn" type="submit">
+                    Guardar respuesta
+                </button>
+
+            </form>
+        </div>
+
+        <div class="tabla-box">
+            <h3>Listado de respuestas</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Pregunta</th>
+                        <th>Respuesta</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.pregunta }}</td>
+                        <td>{{ item.respuesta }}</td>
+                        <td>{{ item.creado_en }}</td>
+                        <td>
+                            <a class="btn-delete"
+                               href="{{ url_for('eliminar_chatbot', item_id=item.id) }}">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
