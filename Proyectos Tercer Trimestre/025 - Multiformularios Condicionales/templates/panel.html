@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel - Multiformularios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Panel de administración</h1>
+    <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+</header>
+
+<main>
+    
+    <!-- tarjeta bienvenida -->
+    <section class="card">
+        <h2>Bienvenido, {{ usuario }}</h2>
+        <p>
+            Desde este panel puedes crear formularios condicionales,
+            compartir enlaces públicos y gestionar respuestas.
+        </p>
+
+        <a class="button-link" href="{{ url_for('crear_formulario') }}">
+            Crear nuevo formulario
+        </a>
+    </section>
+
+    <!-- tabla formularios -->
+    <section class="card">
+        <h2>Formularios creados</h2>
+
+        {% if formularios %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Hash</th>
+                        <th>Enlace público</th>
+                        <th>Respuestas</th>
+                        <th>Estado</th>
+                        <th>Activar / Desactivar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for formulario in formularios %}
+                    <tr>
+                        <!-- titulo -->
+                        <td>{{ formulario.titulo }}</td>
+
+                        <!-- hash -->
+                        <td>{{ formulario.hash }}</td>
+
+                        <!-- formulario publico -->
+                        <td>
+                            <a href="/form/{{ formulario.hash }}" target="_blank">
+                                Abrir formulario
+                            </a>
+                        </td>
+
+                        <!-- respuestas -->
+                        <td>
+                            <a href="{{ url_for('ver_respuestas', formulario_id=formulario.id) }}">
+                                Ver respuestas
+                            </a>
+                        </td>
+
+                        <!-- estado -->
+                        <td>
+                            {% if formulario.activo == 1 %}
+                                Activo
+                            {% else %}
+                                Desactivado
+                            {% endif %}
+                        </td>
+
+                        <!-- activar/desactivar -->
+                        <td>
+                            <a href="{{ url_for('cambiar_estado', formulario_id=formulario.id) }}">
+                                {% if formulario.activo == 1 %}
+                                    Desactivar
+                                {% else %}
+                                    Activar
+                                {% endif %}
+                            </a>
+                        </td>
+
+                        <!-- eliminar -->
+                        <td>
+                            <a 
+                                href="{{ url_for('eliminar_formulario', formulario_id=formulario.id) }}"
+                                onclick="return confirm('¿Seguro que deseas eliminar este formulario y todas sus respuestas?')"
+                            >
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <p>No hay formularios creados todavía.</p>
+        {% endif %}
+    </section>
+
+</main>
+
+</body>
+</html>
