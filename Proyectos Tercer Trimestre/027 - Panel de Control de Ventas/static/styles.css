@@ -1,0 +1,209 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+aside {
+    position: fixed;
+    width: 230px;
+    min-height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 24px;
+}
+
+aside h2 {
+    margin-top: 0;
+    margin-bottom: 28px;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+nav a:hover {
+    background: #374151;
+}
+
+main {
+    margin-left: 230px;
+    padding: 32px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.buscador {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.buscador input {
+    padding: 11px;
+    width: 280px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+button {
+    padding: 11px 16px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #4338ca;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+th {
+    background: #e0e7ff;
+    text-align: left;
+    padding: 14px;
+}
+
+td {
+    padding: 13px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.paginacion {
+    margin-top: 22px;
+}
+
+.paginacion a {
+    display: inline-block;
+    padding: 9px 13px;
+    margin-right: 6px;
+    background: white;
+    color: #4f46e5;
+    border-radius: 7px;
+    text-decoration: none;
+    border: 1px solid #c7d2fe;
+}
+
+.paginacion a.activo {
+    background: #4f46e5;
+    color: white;
+}
+.btn-crear {
+    display: inline-block;
+    background: #16a34a;
+    color: white;
+    padding: 11px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.btn-crear:hover {
+    background: #15803d;
+}
+
+.editar {
+    color: #ca8a04;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.eliminar {
+    color: #dc2626;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.formulario {
+    max-width: 650px;
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.formulario label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+.formulario textarea {
+    min-height: 100px;
+}
+
+.volver {
+    display: inline-block;
+    margin-left: 12px;
+    color: #4f46e5;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    color: #4f46e5;
+    font-size: 16px;
+}
+
+.stat-card p {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.panel {
+    background: white;
+    padding: 26px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
