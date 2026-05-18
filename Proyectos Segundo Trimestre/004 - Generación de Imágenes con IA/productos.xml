@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<product>
+  <meta>
+    <slug>tienda-online</slug>
+    <title>Tienda Online</title>
+    <category>ecommerce</category>
+  </meta>
+
+  <hero>
+    <valueProposition>Vende más con una tienda online moderna</valueProposition>
+    <subtitle>Catálogo bonito, pagos rápidos y gestión fácil</subtitle>
+    <image src="hero.png" alt="Hero banner" />
+  </hero>
+
+  <problem>
+    <title>Problemas</title>
+    <items>
+      <item>Pierdes ventas por una web lenta</item>
+      <item>Tu catálogo no se ve profesional</item>
+      <item>Gestionar pedidos es un caos</item>
+    </items>
+    <image src="problem.png" alt="Problemas del ecommerce" />
+  </problem>
+
+  <solution>
+    <title>Solución</title>
+    <description>Una plataforma sencilla para publicar productos, cobrar y enviar.</description>
+    <image src="solution.png" alt="Solución moderna" />
+  </solution>
+
+  <keyFeatures>
+    <feature>
+      <name>Checkout rápido</name>
+      <benefit>Reduce abandono de carrito</benefit>
+      <image src="features-checkout.png" alt="Checkout" />
+    </feature>
+    <feature>
+      <name>Panel de control</name>
+      <benefit>Gestiona pedidos y stock</benefit>
+      <image src="features-dashboard.png" alt="Dashboard" />
+    </feature>
+  </keyFeatures>
+
+  <targetAudience>
+    <title>Para quién es</title>
+    <items>
+      <item>Autónomos</item>
+      <item>Pequeños negocios</item>
+      <item>Marcas digitales</item>
+    </items>
+    <image src="audience.png" alt="Audiencia" />
+  </targetAudience>
+
+  <useCases>
+    <title>Casos de uso</title>
+    <items>
+      <item>Moda y accesorios</item>
+      <item>Productos digitales</item>
+      <item>Alimentación gourmet</item>
+    </items>
+    <image src="usecases.png" alt="Casos de uso" />
+  </useCases>
+
+  <benefits>
+    <title>Beneficios</title>
+    <items>
+      <item>Más conversión</item>
+      <item>Menos trabajo manual</item>
+      <item>Mejor experiencia de cliente</item>
+    </items>
+    <image src="benefits.png" alt="Beneficios" />
+  </benefits>
+
+  <integrations>
+    <title>Integraciones</title>
+    <items>
+      <item>Stripe</item>
+      <item>PayPal</item>
+      <item>Google Analytics</item>
+    </items>
+    <image src="integrations.png" alt="Integraciones" />
+  </integrations>
+
+  <trust>
+    <title>Confianza</title>
+    <items>
+      <item>Seguridad y buenas prácticas</item>
+      <item>Pagos verificados</item>
+      <item>Soporte básico</item>
+    </items>
+    <image src="trust.png" alt="Confianza" />
+  </trust>
+
+  <finalCTA>
+    <title>Empieza hoy</title>
+    <subtitle>Crea tu tienda y vende en minutos</subtitle>
+    <image src="cta.png" alt="Call to action" />
+  </finalCTA>
+
+  <faq>
+    <q>
+      <question>¿Puedo añadir mis productos fácilmente?</question>
+      <answer>Sí, con un panel sencillo.</answer>
+      <image src="faq.png" alt="FAQ" />
+    </q>
+  </faq>
+</product>
