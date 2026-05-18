@@ -1,0 +1,94 @@
+<style>
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: #f4f6f9;
+        padding: 30px 15px;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .card {
+        background: white;
+        max-width: 700px;
+        margin: auto;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-top: 8px solid crimson;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    label {
+        color: #d61f3f;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        margin-top: 4px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: crimson;
+        box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.15);
+    }
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    button {
+        background: crimson;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: #b31732;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(220, 20, 60, 0.3);
+    }
+
+    a {
+        color: crimson;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+        .card {
+            padding: 24px 20px;
+            border-radius: 12px;
+        }
+    }
+</style>
